@@ -22,7 +22,7 @@ export function initNavigation() {
     const privacy = link.dataset.legal === "privacy";
     legalTitle.textContent = privacy ? "Privacy Policy" : "Terms of Service";
     legalBody.textContent = privacy
-      ? "WebMotion currently stores saved sessions and preferences in this browser using local storage. There is no WebMotion account, cloud sync, or server-side history in this build. When you load a website, your browser requests that website directly. Export or clear local history from Settings or History."
+      ? "WebMotion currently stores saved sessions and preferences in this browser using local storage. There is no WebMotion account, cloud sync, or server-side history in this build. When you load a website, your browser requests that website directly. Export local data from Settings or clear saved sessions from History."
       : "Use WebMotion only with websites you are allowed to access and review. Some websites block embedded previews; WebMotion does not bypass those protections. Results may include manual observations and should not be treated as a formal security or accessibility certification.";
     if (legalDialog?.showModal) legalDialog.showModal(); else toast(legalBody.textContent);
   }));
