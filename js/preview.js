@@ -1,6 +1,18 @@
 import { state, normalizeUrl, toast } from "./state.js";
 import { showView } from "./navigation.js";
 const presets = { desktop:[1440,900], tablet:[768,1024], mobile:[390,844] };
+function updatePreviewScale() {
+  const stage = document.querySelector("#previewStage");
+  const wrap = document.querySelector("#iframeScaleWrap");
+  const frame = document.querySelector("#iframeFrame");
+  if (!stage || !wrap || !frame) return;
+  const styles = getComputedStyle(stage);
+  const available = stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
+  const scale = Math.min(1, Math.max(0.1, available / state.width));
+  frame.style.transform = `scale(${scale})`;
+  wrap.style.width = `${state.width * scale}px`;
+  wrap.style.height = `${Math.min(state.height, 1100) * scale}px`;
+}
 function setDimensions(width,height) {
   state.width = Math.max(240, Math.min(2560, Number(width) || 1440));
   state.height = Math.max(320, Math.min(3000, Number(height) || 900));
@@ -11,6 +23,7 @@ function setDimensions(width,height) {
   const frame = document.querySelector("#iframeFrame");
   frame.style.width = state.width + "px";
   frame.style.height = Math.min(state.height, 1100) + "px";
+  updatePreviewScale();
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", presets[button.dataset.device]?.[0] === state.width && presets[button.dataset.device]?.[1] === state.height));
 }
 function loadUrl(raw) {
@@ -21,6 +34,7 @@ function loadUrl(raw) {
     document.querySelector("#previewUrl").value = url;
     document.querySelector("#frameAddress").textContent = new URL(url).hostname;
     document.querySelector("#previewEmpty").classList.add("hidden");
+    document.querySelector("#iframeScaleWrap").classList.remove("hidden");
     document.querySelector("#iframeFrame").classList.remove("hidden");
     const frame = document.querySelector("#websiteFrame");
     frame.src = "about:blank";
@@ -41,4 +55,7 @@ export function initPreview() {
   document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); window.open(state.currentUrl, "_blank", "noopener,noreferrer"); });
   document.querySelector("#websiteFrame").addEventListener("load", () => { if (state.currentUrl) document.querySelector("#previewNotice").classList.add("visible"); });
   setDimensions(1440,900);
+  const stage = document.querySelector("#previewStage");
+  if ("ResizeObserver" in window) new ResizeObserver(updatePreviewScale).observe(stage);
+  else window.addEventListener("resize", updatePreviewScale);
 }
