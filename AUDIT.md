@@ -26,7 +26,7 @@ This is a source audit, not a complete browser QA certification. A live interact
 | URL safety | URLs containing embedded username/password credentials were accepted. | Credential-bearing URLs are now rejected. |
 | Desktop preview | A desktop viewport could exceed the phone's available width. | Preview is scaled to the available stage width and recalculated on resize and after navigation. |
 | Viewport sizing | The frame height did not account cleanly for its browser-style header and capped tall custom viewports. | The frame now includes the header plus the selected content height; the iframe flexes into the remaining area. |
-| New website session | Findings from a different website could remain attached to the next URL. | Changing to a different URL clears the previous findings, notes, checklist selections, and animation message. |
+| New website session | Findings from a different website could remain attached to the next URL. | Starting a new URL load (including the same URL again) clears previous findings, notes, checklist selections, and animation message; intentional history restoration preserves its saved findings. |
 | History restore | Reopening a saved session restored the URL but not the saved findings. | Reopening restores saved results and checklist selections before loading the URL. |
 | History safety | A locally modified result count could be inserted into HTML without escaping. | The displayed result count is escaped; stored history and restored result records are validated. |
 | Checklist behavior | Rechecking a checklist item could create duplicate findings; unchecking did not remove its entry. | Checklist findings are updated rather than duplicated and are removed when unchecked. |
