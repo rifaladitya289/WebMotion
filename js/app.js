@@ -14,7 +14,8 @@ function initializeApp() {
   initHistory();
   initSettings();
   document.addEventListener("error", event => { if (event.target?.id === "websiteFrame") toast("The preview could not be loaded. The website may block embedding or the network may be unavailable.","error"); }, true);
-  if (!("localStorage" in window)) toast("Local storage is unavailable. History may not persist.","error");
+  try { const testKey = "__webmotion_storage_test__"; window.localStorage.setItem(testKey, "1"); window.localStorage.removeItem(testKey); }
+  catch { toast("Local storage is blocked. History and settings may not persist.", "error"); }
   console.info("WebMotion initialized.");
 }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded",initializeApp,{once:true}); else initializeApp();
