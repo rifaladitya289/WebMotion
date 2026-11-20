@@ -13,13 +13,12 @@ export function initNavigation() {
   document.querySelectorAll("[data-action='get-started']").forEach(button => button.addEventListener("click", () => showWorkspace("overview")));
   document.querySelectorAll("[data-action='go-home']").forEach(button => button.addEventListener("click", showLanding));
   document.querySelectorAll("[data-view]").forEach(button => button.addEventListener("click", () => { showView(button.dataset.view); closeSidebar(); }));
-  document.querySelectorAll(".side-link[data-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.view)));
   document.querySelectorAll(".landing-nav a").forEach(link => link.addEventListener("click", () => { landingNav.classList.remove("open"); mobileMenu?.setAttribute("aria-expanded", "false"); }));
   document.querySelectorAll("[data-legal]").forEach(link => link.addEventListener("click", event => { event.preventDefault(); toast(link.dataset.legal === "privacy" ? "Privacy information: guest data stays in this browser. Cloud sync is not enabled." : "Terms: use WebMotion responsibly and respect the target website's access rules."); }));
   document.querySelector("#fullscreenButton")?.addEventListener("click", async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { toast("Fullscreen is not available in this browser.", "error"); } });
   document.addEventListener("keydown", event => {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") { event.preventDefault(); showView("overview"); document.querySelector("#websiteUrl")?.focus(); }
-    if (event.key === "Escape") { closeSidebar(); landingNav?.classList.remove("open"); }
+    if (event.key === "Escape") { closeSidebar(); landingNav?.classList.remove("open"); mobileMenu?.setAttribute("aria-expanded", "false"); }
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "1") { event.preventDefault(); showView("overview"); }
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "2") { event.preventDefault(); showView("preview"); }
   });
@@ -36,6 +35,7 @@ export function showWorkspace(view = "overview") {
   document.querySelector("#siteHeader")?.classList.add("hidden");
   document.querySelector("#siteFooter")?.classList.add("hidden");
   document.querySelector("#workspacePage")?.classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "instant" });
   showView(view);
 }
 export function showView(view) {
