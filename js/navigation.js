@@ -40,6 +40,7 @@ export function initNavigation() {
   });
 }
 export function showLanding() {
+  document.querySelector("#landingNav")?.classList.remove("open");
   document.querySelector("#landingPage")?.classList.remove("hidden");
   document.querySelector("#siteHeader")?.classList.remove("hidden");
   document.querySelector("#siteFooter")?.classList.remove("hidden");
@@ -51,6 +52,11 @@ export function showLanding() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 export function showWorkspace(view = "overview") {
+  document.querySelector("#landingNav")?.classList.remove("open");
+  document.querySelector("#mobileMenuButton")?.setAttribute("aria-expanded", "false");
+  document.querySelector("#sidebar")?.classList.remove("open");
+  document.querySelector("#mobileOverlay")?.classList.add("hidden");
+  document.querySelector("#workspaceMenuButton")?.setAttribute("aria-expanded", "false");
   document.querySelector("#landingPage")?.classList.add("hidden");
   document.querySelector("#siteHeader")?.classList.add("hidden");
   document.querySelector("#siteFooter")?.classList.add("hidden");
