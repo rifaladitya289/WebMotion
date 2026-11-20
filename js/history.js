@@ -17,8 +17,9 @@ export function initHistory() {
   document.addEventListener("webmotion:save-session", () => {
     if (!state.currentUrl) return toast("Load a website before saving a session.", "error");
     const session = { id: crypto.randomUUID?.() || String(Date.now()), url:state.currentUrl, date:new Date().toISOString(), resultCount:state.results.length, results:state.results.map(result => ({...result})) };
-    state.history.unshift(session); state.history = state.history.slice(0,50);
-    if (!writeJSON(STORAGE_KEYS.history,state.history)) return toast("Storage is full. Export your data or remove older sessions.", "error");
+    const previous = state.history;
+    state.history = [session, ...state.history].slice(0,50);
+    if (!writeJSON(STORAGE_KEYS.history,state.history)) { state.history = previous; return toast("Storage is full. Export your data or remove older sessions.", "error"); }
     renderHistory(); toast("Session saved on this device.", "success");
   });
   document.querySelector("#clearHistory").addEventListener("click", () => {
