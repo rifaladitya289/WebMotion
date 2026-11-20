@@ -59,8 +59,8 @@ export function initTesting() {
   }));
   document.querySelector("#openInteractionTarget").addEventListener("click", () => {
     if (!state.currentUrl) return toast("Load a website preview first.","error");
-    window.open(state.currentUrl,"_blank","noopener,noreferrer");
-    toast("Website opened in a separate tab for manual interaction testing.","info");
+    const opened = window.open(state.currentUrl,"_blank","noopener,noreferrer");
+    toast(opened ? "Website opened in a separate tab for manual interaction testing." : "The browser blocked the new tab. Allow pop-ups or use Open in new tab from Preview.", opened ? "info" : "error");
   });
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => {
     state.currentTool = button.dataset.tool;
