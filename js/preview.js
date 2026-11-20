@@ -45,12 +45,13 @@ function initVirtualMouse() {
   const rightButton = document.querySelector("#virtualRightClick");
   let point = { x: 0.5, y: 0.5 };
   let active = false;
+  let hasPosition = false;
   let paintQueued = false;
   let twoFingerY = null;
 
   const say = message => { if (readout) readout.textContent = message; };
   const placeCursor = () => {
-    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !active) {
+    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !hasPosition) {
       cursor?.classList.add("hidden");
       return;
     }
@@ -72,6 +73,7 @@ function initVirtualMouse() {
     if (!rect.width || !rect.height) return;
     point.x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
     point.y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+    hasPosition = true;
     scheduleCursor();
   };
   const showClickLimit = button => {
@@ -100,11 +102,11 @@ function initVirtualMouse() {
   }, { passive:false });
   pad.addEventListener("pointerup", event => {
     active = false;
-    cursor?.classList.add("hidden");
     if (pad.hasPointerCapture?.(event.pointerId)) pad.releasePointerCapture(event.pointerId);
-    say("Pointer idle · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height));
+    scheduleCursor();
+    say("Pointer · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height));
   });
-  pad.addEventListener("pointercancel", () => { active = false; cursor?.classList.add("hidden"); });
+  pad.addEventListener("pointercancel", () => { active = false; scheduleCursor(); });
   pad.addEventListener("wheel", event => {
     event.preventDefault();
     reportScrollLimit();
@@ -137,7 +139,7 @@ function initVirtualMouse() {
     event.preventDefault();
     point.x = Math.max(0, Math.min(1, point.x));
     point.y = Math.max(0, Math.min(1, point.y));
-    active = true;
+    hasPosition = true;
     scheduleCursor();
   });
   leftButton?.addEventListener("click", () => showClickLimit("Left"));
@@ -146,6 +148,7 @@ function initVirtualMouse() {
   window.addEventListener("webmotion:preview-resized", scheduleCursor);
   window.addEventListener("webmotion:url-loaded", () => {
     active = false;
+    hasPosition = false;
     cursor?.classList.add("hidden");
     say("Pointer idle · 0, 0");
   });
@@ -173,7 +176,7 @@ function loadUrl(raw) {
     } else {
       state.results = [];
       state.notes = [];
-      document.querySelectorAll("#interactionChecklist input, #tool-transition .checklist input").forEach(input => { input.checked = false; });
+      document.querySelectorAll("#animationReviewChecklist input, #interactionChecklist input, #tool-transition .checklist input").forEach(input => { input.checked = false; });
       document.querySelector("#animationOutput").textContent = "No inspection has been run.";
       document.dispatchEvent(new CustomEvent("webmotion:refresh-results"));
     }
