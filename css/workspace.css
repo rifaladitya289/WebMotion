@@ -8,7 +8,7 @@
 .device-preview-column{min-width:0;min-height:0;flex:1;display:flex;align-items:center;justify-content:center;overflow:visible}
 .iframe-scale-wrap{flex:0 0 auto;position:relative;margin:0 auto}
 .iframe-frame{transform-origin:top left;max-width:none;box-shadow:0 0 0 1px rgba(255,255,255,.08);border:7px solid #30283d;border-radius:11px;overflow:hidden;background:#fff}
-.iframe-frame.device-laptop{border-width:7px 7px 10px;border-radius:10px 10px 7px 7px}
+.iframe-frame.device-laptop{border-width:7px;border-radius:10px}
 .iframe-frame.device-desktop{border-width:8px;border-radius:10px}
 .frame-top{height:27px;flex:0 0 27px}
 .virtual-mouse-panel{width:190px;flex:0 0 190px;align-self:stretch;min-height:0;padding:15px 12px;border:1px solid var(--border);border-radius:8px;background:#151022;display:flex;flex-direction:column;gap:10px}
