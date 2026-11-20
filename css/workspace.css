@@ -50,3 +50,31 @@
  .responsive-qa-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
  .animation-review-card{align-items:flex-start;flex-direction:column}
 }
+
+
+/* Virtual mouse visibility and touch-scroll fixes */
+.virtual-mouse-panel.hidden{display:none!important}
+.virtual-mouse-pad{
+  touch-action:none!important;
+  overscroll-behavior:contain;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.preview-stage{overscroll-behavior:contain}
+.virtual-cursor{
+  z-index:50;
+  width:20px;
+  height:27px;
+}
+.virtual-cursor span{
+  width:19px;
+  height:26px;
+  border:0;
+  background:#fff;
+  clip-path:polygon(0 0, 0 100%, 29% 72%, 48% 100%, 63% 93%, 45% 65%, 88% 65%);
+  filter:drop-shadow(1px 1px 0 #171126);
+}
+.virtual-cursor:after{
+  left:8px;
+  top:13px;
+}
