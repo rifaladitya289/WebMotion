@@ -14,7 +14,7 @@ Reviewed the landing page, workspace markup, all CSS files, all JavaScript modul
 - Local CSS and JavaScript references in the HTML.
 - Consistency of the preview, history, results, settings, and navigation flows.
 
-The structural scan found **72 unique HTML IDs**, no duplicate IDs, no missing selector targets, no broken module imports, and no missing local CSS/JS references.
+The structural scan found **76 unique HTML IDs**, no duplicate IDs, no missing selector targets, no broken module imports, and no missing local CSS/JS references.
 
 This is a source audit, not a complete browser QA certification. A live interactive browser session, device matrix, console inspection, and real external-site embedding tests were not available during this audit.
 
