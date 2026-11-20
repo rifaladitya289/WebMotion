@@ -2,6 +2,7 @@ import { state, normalizeUrl, toast } from "./state.js";
 import { showView } from "./navigation.js";
 const presets = { desktop:[1440,900], laptop:[1366,768], tablet:[768,1024], mobile:[390,844] };
 const mouseDevices = new Set(["desktop","laptop"]);
+let previewRequestId = 0;
 function currentDevice() {
   return Object.keys(presets).find(name => presets[name][0] === state.width && presets[name][1] === state.height) || (state.width >= 1000 ? "desktop" : state.width >= 600 ? "tablet" : "mobile");
 }
@@ -116,6 +117,9 @@ function loadUrl(raw) {
       document.querySelector("#animationOutput").textContent = "No inspection has been run.";
       document.dispatchEvent(new CustomEvent("webmotion:refresh-results"));
     }
+    const requestId = ++previewRequestId;
+    const status = document.querySelector("#previewStatus");
+    status.textContent = "Loading preview request… This does not guarantee the website permits iframe embedding.";
     state.currentUrl = url;
     document.querySelector("#websiteUrl").value = url;
     document.querySelector("#previewUrl").value = url;
@@ -126,6 +130,11 @@ function loadUrl(raw) {
     const frame = document.querySelector("#websiteFrame");
     frame.src = "about:blank";
     requestAnimationFrame(() => { frame.src = url; });
+    window.setTimeout(() => {
+      if (requestId === previewRequestId && status.textContent.startsWith("Loading preview")) {
+        status.textContent = "No completion signal received yet. Check your connection, or open the website in a new tab. Some blocked frames do not expose a reliable error to the parent page.";
+      }
+    }, 12000);
     showView("preview");
     requestAnimationFrame(updatePreviewScale);
     toast("Preview requested. The website may block embedding.", "info");
@@ -150,7 +159,12 @@ export function initPreview() {
   document.querySelector("#runResponsive").addEventListener("click", () => { setDimensions(document.querySelector("#testWidth").value, document.querySelector("#testHeight").value); showView("preview"); requestAnimationFrame(updatePreviewScale); toast("Viewport applied. Full responsive quality still needs review."); document.dispatchEvent(new CustomEvent("webmotion:result-added", { detail: { title:"Responsive viewport applied", status:"warning", detail: state.width + " × " + state.height + " preview viewport applied. This confirms the frame size only, not the target site's responsive quality." } })); });
   document.querySelectorAll("[data-preset]").forEach(button => button.addEventListener("click", () => { const [w,h] = presets[button.dataset.preset]; setDimensions(w,h); }));
   document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); window.open(state.currentUrl, "_blank", "noopener,noreferrer"); });
-  document.querySelector("#websiteFrame").addEventListener("load", () => { if (state.currentUrl) document.querySelector("#previewNotice").classList.add("visible"); });
+  document.querySelector("#websiteFrame").addEventListener("load", event => {
+    const frame = event.currentTarget;
+    if (!state.currentUrl || frame.src === "about:blank") return;
+    document.querySelector("#previewNotice").classList.add("visible");
+    document.querySelector("#previewStatus").textContent = "The browser completed iframe navigation. This is not proof that the page rendered: CSP / X-Frame-Options blocks may still show an error page. If the preview is blank or blocked, use Open in new tab.";
+  });
   initVirtualMouse();
   setDimensions(1440,900);
   requestAnimationFrame(updatePreviewScale);
