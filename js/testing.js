@@ -9,6 +9,57 @@ function saveObservation(type) {
   state.notes.unshift(item); state.results.unshift(item); field.value = ""; toast("Observation saved to Results.", "success"); document.dispatchEvent(new CustomEvent("webmotion:result-added",{detail:item}));
 }
 export function initTesting() {
+  const timerDisplay = document.querySelector("#animationTimer");
+  const timerStart = document.querySelector("#animationTimerStart");
+  const timerStop = document.querySelector("#animationTimerStop");
+  const timerReset = document.querySelector("#animationTimerReset");
+  let timerStartedAt = 0;
+  let timerElapsed = 0;
+  let timerInterval = null;
+  const renderTimer = () => {
+    const total = timerElapsed + (timerStartedAt ? performance.now() - timerStartedAt : 0);
+    const tenths = Math.floor(total / 100) % 10;
+    const seconds = Math.floor(total / 1000);
+    timerDisplay.textContent = String(Math.floor(seconds / 60)).padStart(2,"0") + ":" + String(seconds % 60).padStart(2,"0") + "." + tenths;
+  };
+  timerStart.addEventListener("click", () => {
+    if (timerStartedAt) return;
+    timerStartedAt = performance.now();
+    timerStart.disabled = true;
+    timerStop.disabled = false;
+    timerInterval = window.setInterval(renderTimer,100);
+  });
+  timerStop.addEventListener("click", () => {
+    if (!timerStartedAt) return;
+    timerElapsed += performance.now() - timerStartedAt;
+    timerStartedAt = 0;
+    timerStart.disabled = false;
+    timerStop.disabled = true;
+    window.clearInterval(timerInterval);
+    renderTimer();
+    document.querySelector("#animationOutput").textContent = "Manual review timer stopped at " + timerDisplay.textContent + ". This is a user-timed observation, not automatic animation measurement.";
+  });
+  timerReset.addEventListener("click", () => {
+    timerStartedAt = 0;
+    timerElapsed = 0;
+    timerStart.disabled = false;
+    timerStop.disabled = true;
+    window.clearInterval(timerInterval);
+    renderTimer();
+  });
+  document.querySelectorAll("#animationReviewChecklist input").forEach(input => input.addEventListener("change", () => {
+    const title = "Animation review: " + input.value;
+    if (input.checked) addResult(title,"warning","Marked reviewed manually by the user. WebMotion cannot independently verify external animation behavior.");
+    else {
+      state.results = state.results.filter(item => item.title !== title);
+      document.dispatchEvent(new CustomEvent("webmotion:refresh-results"));
+    }
+  }));
+  document.querySelector("#openInteractionTarget").addEventListener("click", () => {
+    if (!state.currentUrl) return toast("Load a website preview first.","error");
+    window.open(state.currentUrl,"_blank","noopener,noreferrer");
+    toast("Website opened in a separate tab for manual interaction testing.","info");
+  });
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => {
     state.currentTool = button.dataset.tool;
     document.querySelectorAll(".tool-tab").forEach(tab => tab.classList.toggle("active", tab === button));
