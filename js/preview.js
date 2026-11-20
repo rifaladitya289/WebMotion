@@ -11,7 +11,7 @@ function updatePreviewScale() {
   const scale = Math.min(1, Math.max(0.1, available / state.width));
   frame.style.transform = `scale(${scale})`;
   wrap.style.width = `${state.width * scale}px`;
-  wrap.style.height = `${Math.min(state.height, 1100) * scale}px`;
+  wrap.style.height = `${(state.height + 27) * scale}px`;
 }
 function setDimensions(width,height) {
   state.width = Math.max(240, Math.min(2560, Number(width) || 1440));
@@ -22,13 +22,18 @@ function setDimensions(width,height) {
   document.querySelector("#testHeight").value = state.height;
   const frame = document.querySelector("#iframeFrame");
   frame.style.width = state.width + "px";
-  frame.style.height = Math.min(state.height, 1100) + "px";
+  frame.style.height = (state.height + 27) + "px";
   updatePreviewScale();
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", presets[button.dataset.device]?.[0] === state.width && presets[button.dataset.device]?.[1] === state.height));
 }
 function loadUrl(raw) {
   try {
     const url = normalizeUrl(raw);
+    if (state.currentUrl && state.currentUrl !== url) {
+      state.results = [];
+      state.notes = [];
+      document.dispatchEvent(new CustomEvent("webmotion:refresh-results"));
+    }
     state.currentUrl = url;
     document.querySelector("#websiteUrl").value = url;
     document.querySelector("#previewUrl").value = url;
