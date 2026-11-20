@@ -44,68 +44,130 @@ function initVirtualMouse() {
   const iframe = document.querySelector("#websiteFrame");
   const cursor = document.querySelector("#virtualCursor");
   const readout = document.querySelector("#virtualMouseReadout");
+  const leftButton = document.querySelector("#virtualLeftClick");
+  const rightButton = document.querySelector("#virtualRightClick");
   let point = { x: 0.5, y: 0.5 };
   let active = false;
   let hasMoved = false;
+  let lastTouchY = null;
+  let paintQueued = false;
+
+  const say = message => { if (readout) readout.textContent = message; };
+  const getFrameDocument = () => {
+    try { return iframe.contentDocument || iframe.contentWindow.document; }
+    catch { return null; }
+  };
   const placeCursor = () => {
-    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !hasMoved) { cursor?.classList.add("hidden"); return; }
+    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !hasMoved) {
+      cursor?.classList.add("hidden");
+      return;
+    }
     const columnRect = column.getBoundingClientRect();
     const iframeRect = iframe.getBoundingClientRect();
+    if (!iframeRect.width || !iframeRect.height) return;
     cursor.style.left = (iframeRect.left - columnRect.left + point.x * iframeRect.width) + "px";
     cursor.style.top = (iframeRect.top - columnRect.top + point.y * iframeRect.height) + "px";
     cursor.classList.remove("hidden");
-    readout.textContent = "Pointer · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height);
+    say("Pointer · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height));
+  };
+  const scheduleCursor = () => {
+    if (paintQueued) return;
+    paintQueued = true;
+    requestAnimationFrame(() => { paintQueued = false; placeCursor(); });
   };
   const move = event => {
-    if (!active && event.type !== "pointermove") return;
     const rect = pad.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
     point.x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
     point.y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
     hasMoved = true;
-    placeCursor();
+    scheduleCursor();
+  };
+  const flashCursor = button => {
+    if (!cursor) return;
+    cursor.classList.remove("click-pulse");
+    void cursor.offsetWidth;
+    cursor.classList.add("click-pulse");
+  };
+  const sendClick = button => {
+    if (!state.currentUrl || !hasMoved) {
+      say("Load a website and move the pointer first.");
+      return;
+    }
+    const doc = getFrameDocument();
+    if (!doc) {
+      say("Click blocked by browser isolation. Use Open in new tab.");
+      return;
+    }
+    try {
+      const x = point.x * (doc.documentElement?.clientWidth || state.width);
+      const y = point.y * (doc.documentElement?.clientHeight || state.height);
+      const target = doc.elementFromPoint(x, y);
+      if (!target) { say("No clickable target at this position."); return; }
+      if (button === "Left") {
+        target.dispatchEvent(new MouseEvent("mousemove", { bubbles:true, clientX:x, clientY:y, view:iframe.contentWindow }));
+        target.click();
+      } else {
+        target.dispatchEvent(new MouseEvent("contextmenu", { bubbles:true, cancelable:true, button:2, buttons:2, clientX:x, clientY:y, view:iframe.contentWindow }));
+      }
+      flashCursor(button);
+      say(button + " click sent · simulated event");
+    } catch {
+      say("Browser blocked page control. This site is isolated; use Open in new tab.");
+    }
   };
   pad.addEventListener("pointerdown", event => {
     event.preventDefault();
     active = true;
-    pad.focus({ preventScroll: true });
+    pad.focus({ preventScroll:true });
     pad.setPointerCapture?.(event.pointerId);
     move(event);
   });
   pad.addEventListener("pointermove", event => {
     if (active) event.preventDefault();
     move(event);
-  }, { passive: false });
+  }, { passive:false });
   pad.addEventListener("pointerup", event => {
     active = false;
     if (pad.hasPointerCapture?.(event.pointerId)) pad.releasePointerCapture(event.pointerId);
   });
   pad.addEventListener("pointercancel", () => { active = false; });
+  pad.addEventListener("wheel", event => {
+    event.preventDefault();
+    try {
+      iframe.contentWindow.scrollBy({ top:event.deltaY, left:event.deltaX, behavior:"auto" });
+      say("Scroll command sent · " + Math.round(event.deltaY) + " px");
+    } catch {
+      say("Scroll blocked by browser isolation. Scroll directly inside the preview.");
+    }
+  }, { passive:false });
   pad.addEventListener("keydown", event => {
     const step = event.shiftKey ? 0.1 : 0.025;
     if (event.key === "ArrowLeft") point.x -= step;
     else if (event.key === "ArrowRight") point.x += step;
     else if (event.key === "ArrowUp") point.y -= step;
     else if (event.key === "ArrowDown") point.y += step;
-    else return;
+    else if (event.key === "PageDown" || event.key === "PageUp") {
+      event.preventDefault();
+      try { iframe.contentWindow.scrollBy(0, event.key === "PageDown" ? state.height * 0.7 : -state.height * 0.7); say("Scroll command sent."); }
+      catch { say("Page scrolling is blocked by browser isolation."); }
+      return;
+    } else return;
     event.preventDefault();
     hasMoved = true;
     point.x = Math.max(0, Math.min(1, point.x));
     point.y = Math.max(0, Math.min(1, point.y));
-    placeCursor();
+    scheduleCursor();
   });
-  const visualClick = button => {
-    hasMoved = true;
-    placeCursor();
-    cursor.classList.remove("click-pulse");
-    void cursor.offsetWidth;
-    cursor.classList.add("click-pulse");
-    readout.textContent = button + " click · visual simulation only";
-  };
-  document.querySelector("#virtualLeftClick").addEventListener("click", () => visualClick("Left"));
-  document.querySelector("#virtualRightClick").addEventListener("click", () => visualClick("Right"));
-  window.addEventListener("resize", placeCursor);
-  window.addEventListener("webmotion:preview-resized", placeCursor);
-  window.addEventListener("webmotion:url-loaded", () => { hasMoved = false; cursor.classList.add("hidden"); readout.textContent = "Pointer idle · 0, 0"; });
+  leftButton?.addEventListener("click", () => sendClick("Left"));
+  rightButton?.addEventListener("click", () => sendClick("Right"));
+  window.addEventListener("resize", scheduleCursor);
+  window.addEventListener("webmotion:preview-resized", scheduleCursor);
+  window.addEventListener("webmotion:url-loaded", () => {
+    hasMoved = false;
+    cursor?.classList.add("hidden");
+    say("Pointer idle · 0, 0");
+  });
 }
 function setDimensions(width,height) {
   const parsedWidth = width === "" ? 1440 : Number(width);
