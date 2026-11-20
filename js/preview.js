@@ -43,8 +43,9 @@ function initVirtualMouse() {
   const readout = document.querySelector("#virtualMouseReadout");
   let point = { x: 0.5, y: 0.5 };
   let active = false;
+  let hasMoved = false;
   const placeCursor = () => {
-    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice())) { cursor?.classList.add("hidden"); return; }
+    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !hasMoved) { cursor?.classList.add("hidden"); return; }
     const columnRect = column.getBoundingClientRect();
     const wrapRect = wrap.getBoundingClientRect();
     cursor.style.left = (wrapRect.left - columnRect.left + point.x * wrapRect.width) + "px";
@@ -57,6 +58,7 @@ function initVirtualMouse() {
     const rect = pad.getBoundingClientRect();
     point.x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
     point.y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+    hasMoved = true;
     placeCursor();
   };
   pad.addEventListener("pointerdown", event => {
@@ -75,11 +77,13 @@ function initVirtualMouse() {
     else if (event.key === "ArrowDown") point.y += step;
     else return;
     event.preventDefault();
+    hasMoved = true;
     point.x = Math.max(0, Math.min(1, point.x));
     point.y = Math.max(0, Math.min(1, point.y));
     placeCursor();
   });
   const visualClick = button => {
+    hasMoved = true;
     placeCursor();
     cursor.classList.remove("click-pulse");
     void cursor.offsetWidth;
@@ -90,7 +94,7 @@ function initVirtualMouse() {
   document.querySelector("#virtualRightClick").addEventListener("click", () => visualClick("Right"));
   window.addEventListener("resize", placeCursor);
   window.addEventListener("webmotion:preview-resized", placeCursor);
-  window.addEventListener("webmotion:url-loaded", () => { cursor.classList.add("hidden"); readout.textContent = "Pointer idle · 0, 0"; });
+  window.addEventListener("webmotion:url-loaded", () => { hasMoved = false; cursor.classList.add("hidden"); readout.textContent = "Pointer idle · 0, 0"; });
 }
 function setDimensions(width,height) {
   const parsedWidth = width === "" ? 1440 : Number(width);
