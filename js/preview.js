@@ -25,13 +25,10 @@ function updatePreviewScale() {
   if (!stage || !wrap || !frame) return;
   const styles = getComputedStyle(stage);
   const mouse = document.querySelector("#virtualMousePanel");
-  const stageInnerWidth = stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
-  const mouseVisible = mouse && !mouse.classList.contains("hidden");
-  const mouseHeight = mouseVisible ? mouse.getBoundingClientRect().height + 14 : 0;
-  const available = Math.max(120, stageInnerWidth);
-  const stageHeight = stage.clientHeight || window.innerHeight * 0.7;
-  const availableHeight = Math.max(180, stageHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom) - mouseHeight - 24);
-  const scale = Math.min(1, available / (state.width + 14), availableHeight / (state.height + 41));
+  const stageInnerWidth = Math.max(120, stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight));
+  const mouseHeight = mouse && !mouse.classList.contains("hidden") ? mouse.getBoundingClientRect().height + 14 : 0;
+  const verticalBudget = Math.max(180, Math.min(window.innerHeight * 0.68, 720) - mouseHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom) - 24);
+  const scale = Math.min(1, stageInnerWidth / (state.width + 14), verticalBudget / (state.height + 41));
   frame.style.transform = `scale(${scale})`;
   wrap.style.width = `${(state.width + 14) * scale}px`;
   wrap.style.height = `${(state.height + 41) * scale}px`;
@@ -48,25 +45,20 @@ function initVirtualMouse() {
   const rightButton = document.querySelector("#virtualRightClick");
   let point = { x: 0.5, y: 0.5 };
   let active = false;
-  let hasMoved = false;
-  let lastTouchY = null;
   let paintQueued = false;
+  let twoFingerY = null;
 
   const say = message => { if (readout) readout.textContent = message; };
-  const getFrameDocument = () => {
-    try { return iframe.contentDocument || iframe.contentWindow.document; }
-    catch { return null; }
-  };
   const placeCursor = () => {
-    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !hasMoved) {
+    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !active) {
       cursor?.classList.add("hidden");
       return;
     }
     const columnRect = column.getBoundingClientRect();
-    const iframeRect = iframe.getBoundingClientRect();
-    if (!iframeRect.width || !iframeRect.height) return;
-    cursor.style.left = (iframeRect.left - columnRect.left + point.x * iframeRect.width) + "px";
-    cursor.style.top = (iframeRect.top - columnRect.top + point.y * iframeRect.height) + "px";
+    const frameRect = iframe.getBoundingClientRect();
+    if (!frameRect.width || !frameRect.height) return;
+    cursor.style.left = (frameRect.left - columnRect.left + point.x * frameRect.width) + "px";
+    cursor.style.top = (frameRect.top - columnRect.top + point.y * frameRect.height) + "px";
     cursor.classList.remove("hidden");
     say("Pointer · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height));
   };
@@ -80,42 +72,20 @@ function initVirtualMouse() {
     if (!rect.width || !rect.height) return;
     point.x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
     point.y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
-    hasMoved = true;
     scheduleCursor();
   };
-  const flashCursor = button => {
-    if (!cursor) return;
-    cursor.classList.remove("click-pulse");
-    void cursor.offsetWidth;
-    cursor.classList.add("click-pulse");
+  const showClickLimit = button => {
+    cursor?.classList.remove("click-pulse");
+    if (cursor) {
+      void cursor.offsetWidth;
+      cursor.classList.add("click-pulse");
+    }
+    say(button + " click unavailable · iframe browser security blocks remote input. Use Open in new tab.");
   };
-  const sendClick = button => {
-    if (!state.currentUrl || !hasMoved) {
-      say("Load a website and move the pointer first.");
-      return;
-    }
-    const doc = getFrameDocument();
-    if (!doc) {
-      say("Click blocked by browser isolation. Use Open in new tab.");
-      return;
-    }
-    try {
-      const x = point.x * (doc.documentElement?.clientWidth || state.width);
-      const y = point.y * (doc.documentElement?.clientHeight || state.height);
-      const target = doc.elementFromPoint(x, y);
-      if (!target) { say("No clickable target at this position."); return; }
-      if (button === "Left") {
-        target.dispatchEvent(new MouseEvent("mousemove", { bubbles:true, clientX:x, clientY:y, view:iframe.contentWindow }));
-        target.click();
-      } else {
-        target.dispatchEvent(new MouseEvent("contextmenu", { bubbles:true, cancelable:true, button:2, buttons:2, clientX:x, clientY:y, view:iframe.contentWindow }));
-      }
-      flashCursor(button);
-      say(button + " click sent · simulated event");
-    } catch {
-      say("Browser blocked page control. This site is isolated; use Open in new tab.");
-    }
+  const reportScrollLimit = () => {
+    say("Remote scroll is blocked for this isolated iframe. Scroll directly inside the website preview.");
   };
+
   pad.addEventListener("pointerdown", event => {
     event.preventDefault();
     active = true;
@@ -124,23 +94,35 @@ function initVirtualMouse() {
     move(event);
   });
   pad.addEventListener("pointermove", event => {
-    if (active) event.preventDefault();
+    if (!active) return;
+    event.preventDefault();
     move(event);
   }, { passive:false });
   pad.addEventListener("pointerup", event => {
     active = false;
+    cursor?.classList.add("hidden");
     if (pad.hasPointerCapture?.(event.pointerId)) pad.releasePointerCapture(event.pointerId);
+    say("Pointer idle · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height));
   });
-  pad.addEventListener("pointercancel", () => { active = false; });
+  pad.addEventListener("pointercancel", () => { active = false; cursor?.classList.add("hidden"); });
   pad.addEventListener("wheel", event => {
     event.preventDefault();
-    try {
-      iframe.contentWindow.scrollBy({ top:event.deltaY, left:event.deltaX, behavior:"auto" });
-      say("Scroll command sent · " + Math.round(event.deltaY) + " px");
-    } catch {
-      say("Scroll blocked by browser isolation. Scroll directly inside the preview.");
+    reportScrollLimit();
+  }, { passive:false });
+  pad.addEventListener("touchstart", event => {
+    if (event.touches.length === 2) {
+      twoFingerY = (event.touches[0].clientY + event.touches[1].clientY) / 2;
+      say("Two-finger scroll detected · target page is isolated");
     }
   }, { passive:false });
+  pad.addEventListener("touchmove", event => {
+    if (event.touches.length === 2) {
+      event.preventDefault();
+      twoFingerY = (event.touches[0].clientY + event.touches[1].clientY) / 2;
+      reportScrollLimit();
+    }
+  }, { passive:false });
+  pad.addEventListener("touchend", event => { if (event.touches.length < 2) twoFingerY = null; });
   pad.addEventListener("keydown", event => {
     const step = event.shiftKey ? 0.1 : 0.025;
     if (event.key === "ArrowLeft") point.x -= step;
@@ -149,22 +131,21 @@ function initVirtualMouse() {
     else if (event.key === "ArrowDown") point.y += step;
     else if (event.key === "PageDown" || event.key === "PageUp") {
       event.preventDefault();
-      try { iframe.contentWindow.scrollBy(0, event.key === "PageDown" ? state.height * 0.7 : -state.height * 0.7); say("Scroll command sent."); }
-      catch { say("Page scrolling is blocked by browser isolation."); }
+      reportScrollLimit();
       return;
     } else return;
     event.preventDefault();
-    hasMoved = true;
     point.x = Math.max(0, Math.min(1, point.x));
     point.y = Math.max(0, Math.min(1, point.y));
+    active = true;
     scheduleCursor();
   });
-  leftButton?.addEventListener("click", () => sendClick("Left"));
-  rightButton?.addEventListener("click", () => sendClick("Right"));
+  leftButton?.addEventListener("click", () => showClickLimit("Left"));
+  rightButton?.addEventListener("click", () => showClickLimit("Right"));
   window.addEventListener("resize", scheduleCursor);
   window.addEventListener("webmotion:preview-resized", scheduleCursor);
   window.addEventListener("webmotion:url-loaded", () => {
-    hasMoved = false;
+    active = false;
     cursor?.classList.add("hidden");
     say("Pointer idle · 0, 0");
   });
@@ -239,7 +220,7 @@ export function initPreview() {
   document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); window.open(state.currentUrl, "_blank", "noopener,noreferrer"); });
   document.querySelector("#websiteFrame").addEventListener("load", event => {
     const frame = event.currentTarget;
-    if (!state.currentUrl || frame.src === "about:blank") return;
+    if (!state.currentUrl || frame.src === "about:blank" || new URL(frame.src, window.location.href).href !== state.currentUrl) return;
     document.querySelector("#previewNotice").classList.add("visible");
     document.querySelector("#previewStatus").textContent = "The browser completed iframe navigation. This is not proof that the page rendered: CSP / X-Frame-Options blocks may still show an error page. If the preview is blank or blocked, use Open in new tab.";
   });
