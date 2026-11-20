@@ -138,6 +138,15 @@ export function initPreview() {
   document.querySelectorAll(".device-button[data-device]").forEach(button => button.addEventListener("click", () => { const preset = presets[button.dataset.device]; if (preset) setDimensions(preset[0], preset[1]); }));
   document.querySelector("#applyViewport").addEventListener("click", () => { setDimensions(document.querySelector("#viewportWidth").value, document.querySelector("#viewportHeight").value); toast("Preview viewport updated."); });
   document.querySelector("#orientationButton").addEventListener("click", () => { const w = state.width; setDimensions(state.height,w); state.orientation = state.width > state.height ? "landscape" : "portrait"; });
+  document.querySelectorAll("[data-qa-width]").forEach(button => button.addEventListener("click", () => {
+    const width = Number(button.dataset.qaWidth);
+    const height = Number(button.dataset.qaHeight);
+    document.querySelector("#testWidth").value = width;
+    document.querySelector("#testHeight").value = height;
+    setDimensions(width,height);
+    showView("preview");
+    toast("Viewport set to " + width + " × " + height + ". Review the page visually, then record findings.");
+  }));
   document.querySelector("#runResponsive").addEventListener("click", () => { setDimensions(document.querySelector("#testWidth").value, document.querySelector("#testHeight").value); showView("preview"); requestAnimationFrame(updatePreviewScale); toast("Viewport applied. Full responsive quality still needs review."); document.dispatchEvent(new CustomEvent("webmotion:result-added", { detail: { title:"Responsive viewport applied", status:"warning", detail: state.width + " × " + state.height + " preview viewport applied. This confirms the frame size only, not the target site's responsive quality." } })); });
   document.querySelectorAll("[data-preset]").forEach(button => button.addEventListener("click", () => { const [w,h] = presets[button.dataset.preset]; setDimensions(w,h); }));
   document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); window.open(state.currentUrl, "_blank", "noopener,noreferrer"); });
