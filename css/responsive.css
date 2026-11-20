@@ -26,3 +26,19 @@
   .device-button{padding:7px 5px;font-size:9px}
   .custom-viewport input{width:62px}
 }
+
+
+/* Responsive sidebar drawer and adjacent preview / mouse */
+@media(max-width:700px){
+ .workspace-page>.sidebar{position:fixed;z-index:40;top:0;bottom:0;left:0;width:270px;height:100vh;min-height:100vh;flex:0 0 270px;transform:translateX(-105%);transition:transform var(--ease);box-shadow:15px 0 40px #0004}
+ .workspace-page>.sidebar.open{transform:translateX(0)}
+ .workspace-page>.workspace-main{width:100%;max-width:100%;min-width:0}
+ #view-preview .preview-stage{height:min(68vh,620px);min-height:390px;padding:12px;gap:12px}
+ #view-preview .virtual-mouse-panel:not(.hidden){flex:0 0 145px;width:145px;min-width:145px;padding:11px 9px}
+ #view-preview .virtual-mouse-pad{min-height:150px}
+}
+@media(max-width:420px){
+ #view-preview .preview-stage{height:min(65vh,540px);min-height:350px;padding:8px;gap:8px}
+ #view-preview .virtual-mouse-panel:not(.hidden){flex-basis:122px;width:122px;min-width:122px;padding:9px 7px}
+ #view-preview .virtual-mouse-pad{min-height:130px}
+}
