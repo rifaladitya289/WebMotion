@@ -44,7 +44,7 @@ function initVirtualMouse() {
   let point = { x: 0.5, y: 0.5 };
   let active = false;
   const placeCursor = () => {
-    if (!pad || !column || !wrap || wrap.classList.contains("hidden")) return;
+    if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice())) { cursor?.classList.add("hidden"); return; }
     const columnRect = column.getBoundingClientRect();
     const wrapRect = wrap.getBoundingClientRect();
     cursor.style.left = (wrapRect.left - columnRect.left + point.x * wrapRect.width) + "px";
@@ -130,7 +130,6 @@ function loadUrl(raw) {
     document.querySelector("#iframeScaleWrap").classList.remove("hidden");
     document.querySelector("#iframeFrame").classList.remove("hidden");
     const frame = document.querySelector("#websiteFrame");
-    frame.src = "about:blank";
     requestAnimationFrame(() => { frame.src = url; });
     window.setTimeout(() => {
       if (requestId === previewRequestId && status.textContent.startsWith("Loading preview")) {
