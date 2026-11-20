@@ -7,6 +7,7 @@ export function initNavigation() {
   const closeSidebar = () => { sidebar?.classList.remove("open"); overlay?.classList.add("hidden"); };
   mobileMenu?.addEventListener("click", () => { const open = landingNav.classList.toggle("open"); mobileMenu.setAttribute("aria-expanded", String(open)); });
   document.querySelector("#workspaceMenuButton")?.addEventListener("click", () => { sidebar.classList.add("open"); overlay.classList.remove("hidden"); });
+  document.querySelector("#backToLanding")?.addEventListener("click", () => { closeSidebar(); showLanding(); });
   document.querySelector("#sidebarClose")?.addEventListener("click", closeSidebar);
   overlay?.addEventListener("click", closeSidebar);
   document.querySelectorAll("[data-action='get-started']").forEach(button => button.addEventListener("click", () => showWorkspace("overview")));
