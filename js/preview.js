@@ -14,6 +14,7 @@ function syncDeviceLayout() {
   mouse?.classList.toggle("hidden", !mouseDevices.has(device));
   document.querySelector("#iframeFrame")?.classList.toggle("device-laptop", device === "laptop");
   document.querySelector("#iframeFrame")?.classList.toggle("device-desktop", device === "desktop");
+  document.querySelector("#virtualCursor")?.classList.toggle("hidden", !mouseDevices.has(device));
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", button.dataset.device === device));
 }
 function updatePreviewScale() {
@@ -32,6 +33,7 @@ function updatePreviewScale() {
   frame.style.transform = `scale(${scale})`;
   wrap.style.width = `${(state.width + 14) * scale}px`;
   wrap.style.height = `${(state.height + 41) * scale}px`;
+  window.dispatchEvent(new Event("webmotion:preview-resized"));
 }
 function initVirtualMouse() {
   const pad = document.querySelector("#virtualMousePad");
