@@ -16,6 +16,7 @@ function syncDeviceLayout() {
   document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", button.dataset.device === device));
 }
 function updatePreviewScale() {
+  syncDeviceLayout();
   const stage = document.querySelector("#previewStage");
   const wrap = document.querySelector("#iframeScaleWrap");
   const frame = document.querySelector("#iframeFrame");
@@ -26,11 +27,10 @@ function updatePreviewScale() {
   const mouseWidth = mouse && !mouse.classList.contains("hidden") ? mouse.getBoundingClientRect().width + 18 : 0;
   const available = Math.max(120, stageInnerWidth - mouseWidth);
   const availableHeight = Math.max(180, stage.clientHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom) - 24);
-  const scale = Math.min(1, available / state.width, availableHeight / (state.height + 35));
+  const scale = Math.min(1, available / (state.width + 14), availableHeight / (state.height + 41));
   frame.style.transform = `scale(${scale})`;
-  wrap.style.width = `${state.width * scale}px`;
-  wrap.style.height = `${(state.height + 35) * scale}px`;
-  syncDeviceLayout();
+  wrap.style.width = `${(state.width + 14) * scale}px`;
+  wrap.style.height = `${(state.height + 41) * scale}px`;
 }
 function setDimensions(width,height) {
   const parsedWidth = width === "" ? 1440 : Number(width);
@@ -42,8 +42,8 @@ function setDimensions(width,height) {
   document.querySelector("#testWidth").value = state.width;
   document.querySelector("#testHeight").value = state.height;
   const frame = document.querySelector("#iframeFrame");
-  frame.style.width = state.width + "px";
-  frame.style.height = (state.height + 27) + "px";
+  frame.style.width = (state.width + 14) + "px";
+  frame.style.height = (state.height + 41) + "px";
   updatePreviewScale();
   syncDeviceLayout();
 }
