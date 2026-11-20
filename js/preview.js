@@ -1,17 +1,36 @@
 import { state, normalizeUrl, toast } from "./state.js";
 import { showView } from "./navigation.js";
-const presets = { desktop:[1440,900], tablet:[768,1024], mobile:[390,844] };
+const presets = { desktop:[1440,900], laptop:[1366,768], tablet:[768,1024], mobile:[390,844] };
+const mouseDevices = new Set(["desktop","laptop"]);
+function currentDevice() {
+  return Object.keys(presets).find(name => presets[name][0] === state.width && presets[name][1] === state.height) || (state.width >= 1000 ? "desktop" : state.width >= 600 ? "tablet" : "mobile");
+}
+function syncDeviceLayout() {
+  const stage = document.querySelector("#previewStage");
+  const mouse = document.querySelector("#virtualMousePanel");
+  const device = currentDevice();
+  stage.dataset.device = device;
+  mouse?.classList.toggle("hidden", !mouseDevices.has(device));
+  document.querySelector("#iframeFrame")?.classList.toggle("device-laptop", device === "laptop");
+  document.querySelector("#iframeFrame")?.classList.toggle("device-desktop", device === "desktop");
+  document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", button.dataset.device === device));
+}
 function updatePreviewScale() {
   const stage = document.querySelector("#previewStage");
   const wrap = document.querySelector("#iframeScaleWrap");
   const frame = document.querySelector("#iframeFrame");
   if (!stage || !wrap || !frame) return;
   const styles = getComputedStyle(stage);
-  const available = stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
-  const scale = Math.min(1, Math.max(0.1, available / state.width));
+  const mouse = document.querySelector("#virtualMousePanel");
+  const stageInnerWidth = stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
+  const mouseWidth = mouse && !mouse.classList.contains("hidden") ? mouse.getBoundingClientRect().width + 18 : 0;
+  const available = Math.max(120, stageInnerWidth - mouseWidth);
+  const availableHeight = Math.max(180, stage.clientHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom) - 24);
+  const scale = Math.min(1, available / state.width, availableHeight / (state.height + 35));
   frame.style.transform = `scale(${scale})`;
   wrap.style.width = `${state.width * scale}px`;
-  wrap.style.height = `${(state.height + 27) * scale}px`;
+  wrap.style.height = `${(state.height + 35) * scale}px`;
+  syncDeviceLayout();
 }
 function setDimensions(width,height) {
   const parsedWidth = width === "" ? 1440 : Number(width);
@@ -26,7 +45,7 @@ function setDimensions(width,height) {
   frame.style.width = state.width + "px";
   frame.style.height = (state.height + 27) + "px";
   updatePreviewScale();
-  document.querySelectorAll(".device-button").forEach(button => button.classList.toggle("active", presets[button.dataset.device]?.[0] === state.width && presets[button.dataset.device]?.[1] === state.height));
+  syncDeviceLayout();
 }
 function loadUrl(raw) {
   try {
@@ -67,6 +86,7 @@ export function initPreview() {
   document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); window.open(state.currentUrl, "_blank", "noopener,noreferrer"); });
   document.querySelector("#websiteFrame").addEventListener("load", () => { if (state.currentUrl) document.querySelector("#previewNotice").classList.add("visible"); });
   setDimensions(1440,900);
+  requestAnimationFrame(updatePreviewScale);
   const stage = document.querySelector("#previewStage");
   if ("ResizeObserver" in window) new ResizeObserver(updatePreviewScale).observe(stage);
   else window.addEventListener("resize", updatePreviewScale);
