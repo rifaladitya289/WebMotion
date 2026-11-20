@@ -1,6 +1,6 @@
 import { state, toast } from "./state.js";
 const toolNames = { responsive:"Responsive",animation:"Animation",interaction:"Interaction",transition:"Transition" };
-function addResult(title,status,detail) { const item = { id: crypto.randomUUID?.() || String(Date.now()), title, status, detail, date: new Date().toISOString() }; state.results.unshift(item); document.dispatchEvent(new CustomEvent("webmotion:result-added",{detail:item})); }
+function addResult(title,status,detail) { const existing = state.results.findIndex(item => item.title === title); const item = { id: existing >= 0 ? state.results[existing].id : (crypto.randomUUID?.() || String(Date.now())), title, status, detail, date: new Date().toISOString() }; if (existing >= 0) state.results[existing] = item; else state.results.unshift(item); document.dispatchEvent(new CustomEvent("webmotion:result-added",{detail:item})); }
 function saveObservation(type) {
   const field = document.querySelector("#" + type + "Note");
   const note = field?.value.trim();
@@ -22,6 +22,6 @@ export function initTesting() {
   });
   document.querySelectorAll("[data-save-note]").forEach(button => button.addEventListener("click", () => saveObservation(button.dataset.saveNote)));
   document.querySelectorAll("#interactionChecklist input, #tool-transition .checklist input").forEach(input => input.addEventListener("change", () => {
-    if (input.checked) { const category = input.closest("#tool-transition") ? "Transition" : "Interaction"; addResult(category + " checklist: " + input.value, "warning", "Marked by the user as reviewed. This is a manual observation, not an automated verification."); }
+    const category = input.closest("#tool-transition") ? "Transition" : "Interaction"; const title = category + " checklist: " + input.value; if (input.checked) addResult(title, "warning", "Marked by the user as reviewed. This is a manual observation, not an automated verification."); else { state.results = state.results.filter(item => item.title !== title); document.dispatchEvent(new CustomEvent("webmotion:refresh-results")); }
   }));
 }
