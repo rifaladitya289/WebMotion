@@ -1,5 +1,5 @@
 export const STORAGE_KEYS = { history: "webmotion_history_v1", settings: "webmotion_settings_v1" };
-export const state = { currentUrl: "", currentView: "overview", currentTool: "responsive", width: 1440, height: 900, orientation: "landscape", results: [], notes: [], history: [] };
+export const state = { currentUrl: "", restoreResultsForUrl: "", currentView: "overview", currentTool: "responsive", width: 1440, height: 900, orientation: "landscape", results: [], notes: [], history: [] };
 export function readJSON(key, fallback) { try { const value = JSON.parse(localStorage.getItem(key)); return value ?? fallback; } catch { return fallback; } }
 export function writeJSON(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; } }
 export function toast(message, type = "info") { const region = document.querySelector("#toastRegion"); if (!region) return; const item = document.createElement("div"); item.className = "toast " + type; item.textContent = message; region.append(item); window.setTimeout(() => item.remove(), 3600); }
