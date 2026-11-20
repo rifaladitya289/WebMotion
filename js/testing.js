@@ -37,7 +37,9 @@ export function initTesting() {
     timerStop.disabled = true;
     window.clearInterval(timerInterval);
     renderTimer();
-    document.querySelector("#animationOutput").textContent = "Manual review timer stopped at " + timerDisplay.textContent + ". This is a user-timed observation, not automatic animation measurement.";
+    const duration = timerDisplay.textContent;
+    document.querySelector("#animationOutput").textContent = "Manual review timer stopped at " + duration + ". This is a user-timed observation, not automatic animation measurement.";
+    addResult("Animation review duration", "warning", "Manual visual review duration: " + duration + ". This does not measure the target page animation automatically.");
   });
   timerReset.addEventListener("click", () => {
     timerStartedAt = 0;
