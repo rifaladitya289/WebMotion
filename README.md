@@ -9,10 +9,10 @@ WebMotion is a static website preview and testing workspace built with HTML, CSS
 - Landing page with Features, How It Works, About, and footer navigation.
 - Guest workspace with URL-based preview flow.
 - Desktop, tablet, mobile, and custom viewport controls.
-- Animation, interaction, and transition review panels.
-- Results report with honest status labels and print-to-PDF support.
+- Manual animation, interaction, and transition review panels (automatic timeline/DOM inspection is not active).
+- Results report with honest status labels, saved session restoration, and print-to-PDF support.
 - Local session history, reopen/delete, and JSON data export.
-- Settings, help, feedback email draft, fullscreen, and keyboard shortcuts.
+- Settings, local data export, clipboard-based feedback, privacy/terms summaries, fullscreen, and keyboard shortcuts.
 - Responsive sidebar/drawer behavior for mobile.
 
 ## Important browser limitations
@@ -53,6 +53,10 @@ WebMotion/
     ├── history.js
     └── settings.js
 ```
+
+## Audit and current limitations
+
+See [AUDIT.md](AUDIT.md) for the latest source-level audit, fixes applied, structural checks, and items that still require real-device/browser testing. The current build has not been certified through a full cross-browser QA run.
 
 ## Planned, not yet active
 
