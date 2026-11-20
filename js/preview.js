@@ -62,12 +62,20 @@ function initVirtualMouse() {
     placeCursor();
   };
   pad.addEventListener("pointerdown", event => {
+    event.preventDefault();
     active = true;
+    pad.focus({ preventScroll: true });
     pad.setPointerCapture?.(event.pointerId);
     move(event);
   });
-  pad.addEventListener("pointermove", move);
-  pad.addEventListener("pointerup", () => { active = false; });
+  pad.addEventListener("pointermove", event => {
+    if (active) event.preventDefault();
+    move(event);
+  }, { passive: false });
+  pad.addEventListener("pointerup", event => {
+    active = false;
+    if (pad.hasPointerCapture?.(event.pointerId)) pad.releasePointerCapture(event.pointerId);
+  });
   pad.addEventListener("pointercancel", () => { active = false; });
   pad.addEventListener("keydown", event => {
     const step = event.shiftKey ? 0.1 : 0.025;
