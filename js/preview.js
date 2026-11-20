@@ -24,11 +24,8 @@ function updatePreviewScale() {
   const frame = document.querySelector("#iframeFrame");
   if (!stage || !wrap || !frame) return;
   const styles = getComputedStyle(stage);
-  const mouse = document.querySelector("#virtualMousePanel");
   const stageInnerWidth = Math.max(120, stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight));
-  const mouseHeight = mouse && !mouse.classList.contains("hidden") ? mouse.getBoundingClientRect().height + 14 : 0;
-  const verticalBudget = Math.max(180, Math.min(window.innerHeight * 0.68, 720) - mouseHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom) - 24);
-  const scale = Math.min(1, stageInnerWidth / (state.width + 14), verticalBudget / (state.height + 41));
+  const scale = Math.min(1, stageInnerWidth / (state.width + 14));
   frame.style.transform = `scale(${scale})`;
   wrap.style.width = `${(state.width + 14) * scale}px`;
   wrap.style.height = `${(state.height + 41) * scale}px`;
