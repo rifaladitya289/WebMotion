@@ -9,9 +9,9 @@ export function initSettings() {
   const save = () => { const next = {confirmClear:confirmClear.checked,reduceMotion:reduceMotion.checked}; writeJSON(STORAGE_KEYS.settings,next); document.body.classList.toggle("reduce-motion",next.reduceMotion); };
   confirmClear.addEventListener("change",save); reduceMotion.addEventListener("change",save);
   document.querySelector("#exportData").addEventListener("click", () => {
-    const payload = { exportedAt:new Date().toISOString(), history:state.history, settings:readJSON(STORAGE_KEYS.settings,{}) };
+    const payload = { exportedAt:new Date().toISOString(), currentUrl:state.currentUrl, currentResults:state.results, currentNotes:state.notes, history:state.history, settings:readJSON(STORAGE_KEYS.settings,{}) };
     const blob = new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
-    const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href=url; link.download="webmotion-local-data.json"; link.click(); URL.revokeObjectURL(url); toast("Local data export prepared.","success");
+    const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href=url; link.download="webmotion-local-data.json"; link.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); toast("Local data export prepared.","success");
   });
   document.querySelector("#feedbackForm").addEventListener("submit",event => {
     event.preventDefault();
