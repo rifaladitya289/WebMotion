@@ -85,3 +85,56 @@ The virtual pointer is deliberately a visual simulator, not a claim of remote co
 ## Remaining verification
 
 The latest changes have been checked for HTML ID uniqueness, selector targets, local module references, and CSS brace balance. They have not been executed in a real browser or on physical devices in this environment. The responsive QA shortcuts are intended to support that next manual device pass.
+
+
+## Full repository audit — 21 November 2026
+
+This follow-up audit reviewed the complete tracked source tree: landing page, workspace navigation, preview and viewport controls, manual QA tools, results, history, settings/export, legal dialogs, and all four stylesheets.
+
+### Source-level defects found and corrected
+
+| Area | Defect | Correction |
+|---|---|---|
+| Workspace visibility | The late `.workspace-page{display:flex!important}` rule could override the global `.hidden` utility, leaving the workspace visible when returning to the landing page. | Added the more specific `.workspace-page.hidden{display:none!important}` rule after the layout override. |
+| Preview sizing | The height-based scale cap made the preview narrower than the available workspace even when horizontal room remained. | Scale now prioritizes the available stage width; tall previews can extend vertically and use normal page scrolling. |
+| Preview navigation | A delayed iframe load from an older URL could overwrite the status for a newer request. | The load handler now ignores a frame whose current URL does not match the active URL. |
+| Responsive results | Applying a responsive viewport dispatched a render event without adding the finding to `state.results`. | The viewport application now creates and stores a dated warning result before refreshing the report. |
+| History restoration | Saved animation checklist findings were restored in Results, but their checkboxes were not restored in the Animation panel. | History reopen now restores Animation, Interaction, and Transition checklist states. |
+| New-session reset | Starting a different URL left animation checklist selections checked from the previous site. | Loading a new session clears the animation, interaction, and transition checklist controls. |
+| Virtual pointer | Pointer visibility and cursor position were inconsistent after releasing a drag. | Pointer position now remains visible after a drag and is reset when a new URL is loaded. |
+| Virtual mouse feedback | The old click feedback could look like a successful website click even though the iframe sandbox prevents remote input. | Left/right controls now explicitly report that external-page clicks are blocked instead of claiming success. Remote scroll attempts likewise report the browser boundary. |
+| Interaction review | A popup-blocked tab could still produce a success toast. | The action now checks the result of `window.open` and reports when the browser blocks it. |
+| Privacy copy | The dialog suggested that history could be cleared from Settings, although clearing is available in History. | The wording now points to the correct page. |
+
+### Current feature inventory and actual behavior
+
+- **Landing page:** Home, Features, How It Works, About, Get Started, and footer policy dialogs.
+- **Workspace navigation:** Overview, Website Preview, Testing Tools, Results, History, Settings, and Help; desktop sidebar and mobile drawer.
+- **Preview:** URL normalization, HTTPS default, credential rejection, iframe load status, timeout hint, external-tab fallback, viewport presets, custom dimensions, and orientation toggle.
+- **Virtual pointer:** Desktop/Laptop-only visual pointer, drag tracking, keyboard arrow movement, coordinates, and visual click feedback. It is not a hardware mouse and cannot deliver trusted input into an isolated external iframe.
+- **Responsive QA:** Common viewport shortcuts and manually recorded observations. Applying a viewport records a warning; it does not claim the target passed.
+- **Animation QA:** Manual timer, checklist, and notes. It does not inspect external animation timelines.
+- **Interaction / Transition QA:** Manual checklists and notes. They do not automate or verify third-party page controls.
+- **Results:** Counts, manual/warning findings, print dialog for PDF, and session save.
+- **History:** Local save, reopen, delete, clear, and restore of recorded checklist state.
+- **Settings:** Clear-history confirmation preference, reduced-motion preference, JSON export, and clipboard feedback.
+- **Help / legal:** Browser limitations, privacy summary, and usage terms.
+
+### Verification performed after corrections
+
+- 91 HTML IDs checked; no duplicate IDs found.
+- 69 distinct literal JavaScript ID selectors checked; no missing target IDs found.
+- All relative JavaScript module imports resolve to tracked JavaScript files.
+- CSS brace counts are balanced in all four stylesheets.
+- Workspace hidden-state override and responsive result persistence were checked in source.
+- Repository tree and latest source blobs were re-fetched after changes.
+
+### Explicitly unverified / architectural limits
+
+1. No real browser session or physical desktop/tablet/phone rendering was available for this audit. Visual layout, touch latency, iframe behavior, console errors, and deployment timing still need runtime verification.
+2. CSP and X-Frame-Options may block a target from appearing at all.
+3. The iframe deliberately retains its sandbox. Same-origin policy and sandbox isolation prevent WebMotion from reliably reading or controlling third-party page DOM, dispatching real clicks/right-clicks, or scrolling its internal document from the separate mouse pad. A synthetic DOM event is not equivalent to trusted hardware input.
+4. A true remote mouse/scroll experience across arbitrary websites requires a controlled browser session or a different architecture with a server-side browser/remote-control layer. It cannot be made universal by changing static GitHub Pages JavaScript without weakening security.
+5. Responsive viewport presets simulate CSS viewport dimensions; they do not reproduce every device's hardware, browser chrome, GPU, or operating-system behavior.
+
+This audit corrects identifiable source-level defects found in the repository. It does not certify the application as bug-free across every browser, target website, or physical device.
