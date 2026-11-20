@@ -34,6 +34,8 @@ function loadUrl(raw) {
     if (state.currentUrl && state.currentUrl !== url) {
       state.results = [];
       state.notes = [];
+      document.querySelectorAll("#interactionChecklist input, #tool-transition .checklist input").forEach(input => { input.checked = false; });
+      document.querySelector("#animationOutput").textContent = "No inspection has been run.";
       document.dispatchEvent(new CustomEvent("webmotion:refresh-results"));
     }
     state.currentUrl = url;
@@ -47,6 +49,7 @@ function loadUrl(raw) {
     frame.src = "about:blank";
     requestAnimationFrame(() => { frame.src = url; });
     showView("preview");
+    requestAnimationFrame(updatePreviewScale);
     toast("Preview requested. The website may block embedding.", "info");
     document.dispatchEvent(new CustomEvent("webmotion:url-loaded", { detail: { url } }));
   } catch (error) { toast(error.message, "error"); }
