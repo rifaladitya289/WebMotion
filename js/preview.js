@@ -39,6 +39,7 @@ function initVirtualMouse() {
   const pad = document.querySelector("#virtualMousePad");
   const column = document.querySelector("#devicePreviewColumn");
   const wrap = document.querySelector("#iframeScaleWrap");
+  const iframe = document.querySelector("#websiteFrame");
   const cursor = document.querySelector("#virtualCursor");
   const readout = document.querySelector("#virtualMouseReadout");
   let point = { x: 0.5, y: 0.5 };
@@ -47,9 +48,9 @@ function initVirtualMouse() {
   const placeCursor = () => {
     if (!pad || !column || !wrap || wrap.classList.contains("hidden") || !mouseDevices.has(currentDevice()) || !hasMoved) { cursor?.classList.add("hidden"); return; }
     const columnRect = column.getBoundingClientRect();
-    const wrapRect = wrap.getBoundingClientRect();
-    cursor.style.left = (wrapRect.left - columnRect.left + point.x * wrapRect.width) + "px";
-    cursor.style.top = (wrapRect.top - columnRect.top + point.y * wrapRect.height) + "px";
+    const iframeRect = iframe.getBoundingClientRect();
+    cursor.style.left = (iframeRect.left - columnRect.left + point.x * iframeRect.width) + "px";
+    cursor.style.top = (iframeRect.top - columnRect.top + point.y * iframeRect.height) + "px";
     cursor.classList.remove("hidden");
     readout.textContent = "Pointer · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height);
   };
