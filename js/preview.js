@@ -26,9 +26,11 @@ function updatePreviewScale() {
   const styles = getComputedStyle(stage);
   const mouse = document.querySelector("#virtualMousePanel");
   const stageInnerWidth = stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
-  const mouseWidth = mouse && !mouse.classList.contains("hidden") ? mouse.getBoundingClientRect().width + 18 : 0;
-  const available = Math.max(120, stageInnerWidth - mouseWidth);
-  const availableHeight = Math.max(180, stage.clientHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom) - 24);
+  const mouseVisible = mouse && !mouse.classList.contains("hidden");
+  const mouseHeight = mouseVisible ? mouse.getBoundingClientRect().height + 14 : 0;
+  const available = Math.max(120, stageInnerWidth);
+  const stageHeight = stage.clientHeight || window.innerHeight * 0.7;
+  const availableHeight = Math.max(180, stageHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom) - mouseHeight - 24);
   const scale = Math.min(1, available / (state.width + 14), availableHeight / (state.height + 41));
   frame.style.transform = `scale(${scale})`;
   wrap.style.width = `${(state.width + 14) * scale}px`;
