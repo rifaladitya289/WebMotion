@@ -14,8 +14,10 @@ function updatePreviewScale() {
   wrap.style.height = `${(state.height + 27) * scale}px`;
 }
 function setDimensions(width,height) {
-  state.width = Math.max(240, Math.min(2560, Number(width) || 1440));
-  state.height = Math.max(320, Math.min(3000, Number(height) || 900));
+  const parsedWidth = width === "" ? 1440 : Number(width);
+  const parsedHeight = height === "" ? 900 : Number(height);
+  state.width = Math.max(240, Math.min(2560, Number.isFinite(parsedWidth) ? parsedWidth : 1440));
+  state.height = Math.max(320, Math.min(3000, Number.isFinite(parsedHeight) ? parsedHeight : 900));
   document.querySelector("#viewportWidth").value = state.width;
   document.querySelector("#viewportHeight").value = state.height;
   document.querySelector("#testWidth").value = state.width;
