@@ -4,23 +4,24 @@ export function initNavigation() {
   const mobileMenu = document.querySelector("#mobileMenuButton");
   const sidebar = document.querySelector("#sidebar");
   const overlay = document.querySelector("#mobileOverlay");
-  const closeSidebar = () => { sidebar?.classList.remove("open"); overlay?.classList.add("hidden"); };
+  const closeSidebar = () => { sidebar?.classList.remove("open"); overlay?.classList.add("hidden"); document.querySelector("#workspaceMenuButton")?.setAttribute("aria-expanded", "false"); };
   mobileMenu?.addEventListener("click", () => { const open = landingNav.classList.toggle("open"); mobileMenu.setAttribute("aria-expanded", String(open)); });
-  document.querySelector("#workspaceMenuButton")?.addEventListener("click", () => { sidebar.classList.add("open"); overlay.classList.remove("hidden"); });
+  document.querySelector("#workspaceMenuButton")?.addEventListener("click", event => { sidebar.classList.add("open"); overlay.classList.remove("hidden"); event.currentTarget.setAttribute("aria-expanded", "true"); });
   document.querySelector("#backToLanding")?.addEventListener("click", () => { closeSidebar(); showLanding(); });
   document.querySelector("#sidebarClose")?.addEventListener("click", closeSidebar);
   overlay?.addEventListener("click", closeSidebar);
   document.querySelectorAll("[data-action='get-started']").forEach(button => button.addEventListener("click", () => showWorkspace("overview")));
-  document.querySelectorAll("[data-action='go-home']").forEach(button => button.addEventListener("click", showLanding));
+  document.querySelectorAll("[data-action='go-home']").forEach(button => button.addEventListener("click", () => { closeSidebar(); showLanding(); }));
   document.querySelectorAll("[data-view]").forEach(button => button.addEventListener("click", () => { showView(button.dataset.view); closeSidebar(); }));
   document.querySelectorAll(".landing-nav a").forEach(link => link.addEventListener("click", () => { landingNav.classList.remove("open"); mobileMenu?.setAttribute("aria-expanded", "false"); }));
   document.querySelectorAll("[data-legal]").forEach(link => link.addEventListener("click", event => { event.preventDefault(); toast(link.dataset.legal === "privacy" ? "Privacy information: guest data stays in this browser. Cloud sync is not enabled." : "Terms: use WebMotion responsibly and respect the target website's access rules."); }));
   document.querySelector("#fullscreenButton")?.addEventListener("click", async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { toast("Fullscreen is not available in this browser.", "error"); } });
   document.addEventListener("keydown", event => {
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") { event.preventDefault(); showView("overview"); document.querySelector("#websiteUrl")?.focus(); }
+    const typing = ["INPUT", "TEXTAREA", "SELECT"].includes(event.target?.tagName) || event.target?.isContentEditable;
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && !typing) { event.preventDefault(); showWorkspace("overview"); document.querySelector("#websiteUrl")?.focus(); }
     if (event.key === "Escape") { closeSidebar(); landingNav?.classList.remove("open"); mobileMenu?.setAttribute("aria-expanded", "false"); }
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "1") { event.preventDefault(); showView("overview"); }
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "2") { event.preventDefault(); showView("preview"); }
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "1" && !typing) { event.preventDefault(); showWorkspace("overview"); }
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "2" && !typing) { event.preventDefault(); showWorkspace("preview"); }
   });
 }
 export function showLanding() {
@@ -28,6 +29,10 @@ export function showLanding() {
   document.querySelector("#siteHeader")?.classList.remove("hidden");
   document.querySelector("#siteFooter")?.classList.remove("hidden");
   document.querySelector("#workspacePage")?.classList.add("hidden");
+  document.querySelector("#sidebar")?.classList.remove("open");
+  document.querySelector("#mobileOverlay")?.classList.add("hidden");
+  document.querySelector("#workspaceMenuButton")?.setAttribute("aria-expanded", "false");
+  document.querySelector("#mobileMenuButton")?.setAttribute("aria-expanded", "false");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 export function showWorkspace(view = "overview") {
@@ -35,7 +40,7 @@ export function showWorkspace(view = "overview") {
   document.querySelector("#siteHeader")?.classList.add("hidden");
   document.querySelector("#siteFooter")?.classList.add("hidden");
   document.querySelector("#workspacePage")?.classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: "instant" });
+  window.scrollTo({ top: 0, behavior: "auto" });
   showView(view);
 }
 export function showView(view) {
