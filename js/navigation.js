@@ -14,8 +14,23 @@ export function initNavigation() {
   document.querySelectorAll("[data-action='go-home']").forEach(button => button.addEventListener("click", () => { closeSidebar(); showLanding(); }));
   document.querySelectorAll("[data-view]").forEach(button => button.addEventListener("click", () => { showView(button.dataset.view); closeSidebar(); }));
   document.querySelectorAll(".landing-nav a").forEach(link => link.addEventListener("click", () => { landingNav.classList.remove("open"); mobileMenu?.setAttribute("aria-expanded", "false"); }));
-  document.querySelectorAll("[data-legal]").forEach(link => link.addEventListener("click", event => { event.preventDefault(); toast(link.dataset.legal === "privacy" ? "Privacy information: guest data stays in this browser. Cloud sync is not enabled." : "Terms: use WebMotion responsibly and respect the target website's access rules."); }));
-  document.querySelector("#fullscreenButton")?.addEventListener("click", async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { toast("Fullscreen is not available in this browser.", "error"); } });
+  const legalDialog = document.querySelector("#legalDialog");
+  const legalTitle = document.querySelector("#legalTitle");
+  const legalBody = document.querySelector("#legalBody");
+  document.querySelectorAll("[data-legal]").forEach(link => link.addEventListener("click", event => {
+    event.preventDefault();
+    const privacy = link.dataset.legal === "privacy";
+    legalTitle.textContent = privacy ? "Privacy Policy" : "Terms of Service";
+    legalBody.textContent = privacy
+      ? "WebMotion currently stores saved sessions and preferences in this browser using local storage. There is no WebMotion account, cloud sync, or server-side history in this build. When you load a website, your browser requests that website directly. Export or clear local history from Settings or History."
+      : "Use WebMotion only with websites you are allowed to access and review. Some websites block embedded previews; WebMotion does not bypass those protections. Results may include manual observations and should not be treated as a formal security or accessibility certification.";
+    if (legalDialog?.showModal) legalDialog.showModal(); else toast(legalBody.textContent);
+  }));
+  document.querySelector("#closeLegalDialog")?.addEventListener("click", () => legalDialog?.close());
+  legalDialog?.addEventListener("click", event => { if (event.target === legalDialog) legalDialog.close(); });
+  const fullscreenButton = document.querySelector("#fullscreenButton");
+  fullscreenButton?.addEventListener("click", async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { toast("Fullscreen is not available in this browser.", "error"); } });
+  document.addEventListener("fullscreenchange", () => { if (fullscreenButton) fullscreenButton.textContent = document.fullscreenElement ? "Exit fullscreen" : "Fullscreen"; });
   document.addEventListener("keydown", event => {
     const typing = ["INPUT", "TEXTAREA", "SELECT"].includes(event.target?.tagName) || event.target?.isContentEditable;
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && !typing) { event.preventDefault(); showWorkspace("overview"); document.querySelector("#websiteUrl")?.focus(); }
