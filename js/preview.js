@@ -31,7 +31,9 @@ function setDimensions(width,height) {
 function loadUrl(raw) {
   try {
     const url = normalizeUrl(raw);
-    if (state.currentUrl && state.currentUrl !== url) {
+    if (state.restoreResultsForUrl === url) {
+      state.restoreResultsForUrl = "";
+    } else {
       state.results = [];
       state.notes = [];
       document.querySelectorAll("#interactionChecklist input, #tool-transition .checklist input").forEach(input => { input.checked = false; });
