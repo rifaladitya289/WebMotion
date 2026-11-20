@@ -12,7 +12,7 @@
 @media(max-width:760px){
   .preview-stage{height:500px;min-height:420px;padding:12px;gap:0}
   .preview-stage[data-device="desktop"],.preview-stage[data-device="laptop"]{align-items:center}
-  .virtual-mouse-panel{display:none!important}
+  .virtual-mouse-panel{display:flex;width:92px;flex:0 0 92px;padding:9px 6px;gap:7px}.virtual-mouse-heading strong{font-size:11px}.virtual-mouse-heading small,.virtual-mouse-panel>p{font-size:8px}.virtual-mouse-pad{min-height:80px}
   .device-preview-column{width:100%;flex:1}
   .preview-toolbar{min-width:0}
   .preview-url-form{min-width:0;width:100%}
