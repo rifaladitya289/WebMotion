@@ -14,7 +14,7 @@ Reviewed the landing page, workspace markup, all CSS files, all JavaScript modul
 - Local CSS and JavaScript references in the HTML.
 - Consistency of the preview, history, results, settings, and navigation flows.
 
-The structural scan found **76 unique HTML IDs**, no duplicate IDs, no missing selector targets, no broken module imports, and no missing local CSS/JS references.
+The structural scan found **77 unique HTML IDs**, no duplicate IDs, no missing selector targets, no broken module imports, and no missing local CSS/JS references.
 
 This is a source audit, not a complete browser QA certification. A live interactive browser session, device matrix, console inspection, and real external-site embedding tests were not available during this audit.
 
@@ -38,6 +38,10 @@ This is a source audit, not a complete browser QA certification. A live interact
 | Fullscreen | The button label did not reflect whether fullscreen was active. | The label updates on the browser's fullscreen-change event. |
 | Legal links | Footer policy links only showed short toast messages. | They now open readable privacy and usage-summary dialogs. |
 | Small screens | Workspace topbar could become crowded on very narrow phones. | Narrow-screen spacing and breadcrumb rules were added. |
+| Device preset events | The preview stage itself also carried `data-device`, so the broad event selector could treat a stage click as a preset selection. | Preset listeners now target only `.device-button[data-device]`. |
+| Desktop frame dimensions | The desktop bezel used 8 px borders while the scale calculation reserved 7 px per side, shrinking the iframe viewport by 2 px. | Desktop bezel now uses the same 7 px border assumption as the sizing calculation. |
+| Tablet toolbar | The URL field and four device controls could compete for horizontal space at tablet widths. | The toolbar wraps and places the viewport controls on a separate row below 950 px. |
+| Responsive stylesheet | The first tablet-toolbar patch exposed an extra closing brace in the responsive media query. | The media query grouping was corrected; all four CSS files now have balanced braces. |
 | Accessibility | Keyboard focus was not clearly visible on controls. | A visible focus outline was added for keyboard navigation. |
 | Export | Export omitted unsaved current-session findings and revoked the download URL immediately. | Current work is included and the object URL is revoked after a short delay. |
 
