@@ -68,3 +68,20 @@ This is a source audit, not a complete browser QA certification. A live interact
 ## Audit conclusion
 
 The source-level issues listed above have been corrected in the repository. Structural checks pass. The remaining items are documented product/browser limitations or tests that require a real browser/device run; they are not being reported as passed without that evidence.
+
+
+## Follow-up implementation — virtual pointer and guided QA
+
+| Area | Added behavior | Boundary |
+|---|---|---|
+| Virtual Mouse | Desktop/Laptop-only trackpad pad; pointer follows pad movement and touch/drag, arrow keys move it, left/right controls show click feedback, and coordinates are displayed. | The cursor is an overlay in the parent app. Synthetic clicks cannot be forwarded as trusted input into arbitrary cross-origin or sandboxed website frames. Use the actual page pointer or open the target in a new tab for real interaction. |
+| Preview diagnostics | Shows loading, iframe navigation completion, and a timeout hint with a new-tab fallback. | Browsers do not reliably expose CSP / X-Frame-Options denial details to the embedding page. A load event does not prove that the target rendered successfully. |
+| Animation review | Added a review timer, manual review checklist, and saved duration/checklist findings in Results. | This does not inspect CSS/Web Animations timelines in an external sandboxed page. |
+| Interaction review | Added a direct open-in-new-tab action and retained the manual interaction checklist and observation notes. | Cross-origin page controls cannot be automatically clicked, read, or verified by this build. |
+| Responsive QA | Added common viewport shortcuts (320, 360, 390, 768, 1024, 1440 px) and a dedicated responsive observation field. | The user must inspect the target layout at each selected viewport; these presets do not certify physical-device behavior. |
+
+The virtual pointer is deliberately a visual simulator, not a claim of remote control over the embedded website. The app keeps the iframe sandbox restrictions rather than weakening them to gain unsafe access to third-party page content.
+
+## Remaining verification
+
+The latest changes have been checked for HTML ID uniqueness, selector targets, local module references, and CSS brace balance. They have not been executed in a real browser or on physical devices in this environment. The responsive QA shortcuts are intended to support that next manual device pass.
