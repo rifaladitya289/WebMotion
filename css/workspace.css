@@ -160,3 +160,7 @@
   #view-preview .virtual-mouse-buttons{flex-basis:68px}
   #view-preview .virtual-mouse-readout{flex-basis:65px}
 }
+
+
+/* Keep the workspace hidden when returning to the landing page. */
+.workspace-page.hidden{display:none!important}
