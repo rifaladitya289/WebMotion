@@ -53,10 +53,12 @@ function initVirtualMouse() {
       return;
     }
     const columnRect = column.getBoundingClientRect();
-    const frameRect = iframe.getBoundingClientRect();
-    if (!frameRect.width || !frameRect.height) return;
-    cursor.style.left = (frameRect.left - columnRect.left + point.x * frameRect.width) + "px";
-    cursor.style.top = (frameRect.top - columnRect.top + point.y * frameRect.height) + "px";
+    // Map the pointer to the actual iframe viewport, not the decorative
+    // browser frame (which also contains borders and the address-bar chrome).
+    const viewportRect = iframe.getBoundingClientRect();
+    if (!viewportRect.width || !viewportRect.height) return;
+    cursor.style.left = (viewportRect.left - columnRect.left + point.x * viewportRect.width) + "px";
+    cursor.style.top = (viewportRect.top - columnRect.top + point.y * viewportRect.height) + "px";
     cursor.classList.remove("hidden");
     say("Pointer · " + Math.round(point.x * state.width) + ", " + Math.round(point.y * state.height));
   };
@@ -93,8 +95,9 @@ function initVirtualMouse() {
     move(event);
   });
   pad.addEventListener("pointermove", event => {
-    if (!active) return;
-    event.preventDefault();
+    // A mouse can hover-move the pointer; touch and pen remain drag-controlled.
+    if (!active && event.pointerType !== "mouse") return;
+    if (active) event.preventDefault();
     move(event);
   }, { passive:false });
   pad.addEventListener("pointerup", event => {
