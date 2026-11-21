@@ -20,9 +20,9 @@ WebMotion is a focused website viewport preview and manual QA documentation work
 
 - A target website may block iframe embedding using Content Security Policy `frame-ancestors` or `X-Frame-Options`.
 - Browser same-origin policy and the iframe sandbox prevent reliable access to arbitrary third-party page content or trusted remote clicks, right-clicks, and scrolling.
-- The virtual mouse is a visual pointer simulator. For real interaction, use the embedded page directly when it works or open the target in a separate tab.
+- The Virtual Pointer is a visual pointer simulator. For real interaction, use the embedded page directly when it works or open the target in a separate tab.
 - Responsive controls change the preview viewport; they do not certify a website on every physical device.
-- Animation, interaction, and transition checks are manual observations, not automated passes.
+- Animation, interaction, and transition reviews are user-recorded observations, not automated passes.
 - Authentication, cloud sync, and server-side reports are not active in this static build.
 
 WebMotion intentionally keeps the iframe sandboxed. Do not add `allow-same-origin` or remove sandbox protections merely to imitate remote control. A true remote-browser experience is a separate backend architecture.
