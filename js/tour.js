@@ -30,7 +30,7 @@ const steps = [
     view: "results",
     target: "#saveSession",
     title: "Save your testing session",
-    description: "Results collects recorded checks and manual observations. Saving creates a local session on this device.",
+    description: "Results collects manual observations and browser limitations. Saving creates a local session on this device.",
     instruction: "Select Save session. This creates a history entry that you can reopen later.",
     complete: "webmotion:session-saved"
   },
