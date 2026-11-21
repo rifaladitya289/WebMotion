@@ -52,11 +52,9 @@ const steps = [
   },
   {
     view: "help",
-    target: "#startTourButton",
     title: "Help is always available",
     description: "Help & Feedback explains browser preview limitations and lets you prepare feedback. You can restart this tour here at any time.",
     instruction: "You are at Help & Feedback. Select Finish tour when you are ready.",
-    selector: "#startTourButton",
     finishStep: true
   }
 ];
@@ -112,18 +110,18 @@ function renderOffer() {
 function renderStep(step) {
   ensureLayer();
   const progress = Math.round(((currentIndex + 1) / steps.length) * 100);
-  panel.innerHTML = '<div class="tour-panel-top"><span class="tour-kicker">INTERACTIVE PRODUCT TOUR</span><button class="tour-close" type="button" aria-label="Skip tutorial">×</button></div><div class="tour-progress-meta"><span>STEP ' + String(currentIndex + 1).padStart(2,"0") + ' / ' + String(steps.length).padStart(2,"0") + '</span><span>' + progress + '%</span></div><div class="tour-progress"><span style="width:' + progress + '%"></span></div><h2 id="tourTitle"></h2><p id="tourDescription"></p><div class="tour-instruction"><strong>Your task</strong><p></p></div><div class="tour-panel-actions"><button type="button" class="tour-button tour-button-quiet" data-tour-back ' + (currentIndex === 0 ? "disabled" : "") + '>Back</button><button type="button" class="tour-button tour-button-primary" data-tour-skip>Skip tour</button></div><p class="tour-footnote">Complete the highlighted action to continue automatically.</p>';
+  panel.innerHTML = '<div class="tour-panel-top"><span class="tour-kicker">INTERACTIVE PRODUCT TOUR</span><button class="tour-close" type="button" aria-label="Skip tutorial">×</button></div><div class="tour-progress-meta"><span>STEP ' + String(currentIndex + 1).padStart(2,"0") + ' / ' + String(steps.length).padStart(2,"0") + '</span><span>' + progress + '%</span></div><div class="tour-progress"><span style="width:' + progress + '%"></span></div><h2 id="tourTitle"></h2><p id="tourDescription"></p><div class="tour-instruction"><strong>Your task</strong><p></p></div><div class="tour-panel-actions"><button type="button" class="tour-button tour-button-quiet" data-tour-back ' + (currentIndex === 0 ? "disabled" : "") + '>Back</button><button type="button" class="tour-button tour-button-primary" data-tour-skip>Skip tour</button>' + (step.finishStep ? '<button type="button" class="tour-button tour-button-primary" data-tour-finish-step>Finish tour</button>' : '') + '</div><p class="tour-footnote">' + (step.finishStep ? 'You can replay this tour anytime from this page.' : 'Complete the highlighted action to continue automatically.') + '</p>';
   panel.querySelector("#tourTitle").textContent = step.title;
   panel.querySelector("#tourDescription").textContent = step.description;
   panel.querySelector(".tour-instruction p").textContent = step.instruction;
   panel.querySelector(".tour-close").addEventListener("click", skipTour);
   panel.querySelector("[data-tour-skip]").addEventListener("click", skipTour);
   panel.querySelector("[data-tour-back]").addEventListener("click", goBack);
+  panel.querySelector("[data-tour-finish-step]")?.addEventListener("click", finishTour);
   clearSpotlight();
   const target = document.querySelector(step.target);
   if (target) {
     target.classList.add("tour-spotlight");
-    target.setAttribute("aria-describedby", "tourDescription");
     target.scrollIntoView({ block: "center", behavior: document.body.classList.contains("reduce-motion") ? "auto" : "smooth" });
   }
 }
@@ -191,6 +189,7 @@ export function initTour() {
   document.addEventListener("change", handleChange, true);
   document.addEventListener("webmotion:url-loaded", handleCustomEvent);
   document.addEventListener("webmotion:session-saved", handleCustomEvent);
+  document.addEventListener("keydown", event => { if (event.key === "Escape" && layer) { if (active) skipTour(); else closeOffer(); } });
   document.querySelectorAll("#startTourButton, #startTourOverview").forEach(button => button.addEventListener("click", startTour));
   const progress = readProgress();
   if (!progress.offered && !progress.completed) {
