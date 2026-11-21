@@ -1,10 +1,11 @@
-import { state, toast, formatDate } from "./state.js";
+import { state, formatDate } from "./state.js";
 
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 }
 
 function itemKind(item) {
+  if (item.title === "Responsive viewport applied") return "legacy_unverified";
   if (["manual_observation", "capability_limit", "verified_check"].includes(item.kind)) {
     if (item.kind === "verified_check" && item.source !== "webmotion_automated") return "legacy_unverified";
     return item.kind;
