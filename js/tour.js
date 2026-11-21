@@ -39,8 +39,8 @@ const steps = [
     target: '#view-history [data-reopen]',
     title: "Find your saved session",
     description: "History stores recent sessions in this browser. It is local to this device and does not sync to an account.",
-    instruction: "You have arrived at History. Find the session you just saved; you can reopen it whenever you need.",
-    selector: '[data-view="history"]'
+    instruction: "Select Reopen on the session you just saved. WebMotion will restore that session on this device.",
+    selector: "#view-history [data-reopen]"
   },
   {
     view: "settings",
