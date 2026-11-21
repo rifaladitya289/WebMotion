@@ -203,6 +203,18 @@ function loadUrl(raw) {
     document.dispatchEvent(new CustomEvent("webmotion:url-loaded", { detail: { url } }));
   } catch (error) { toast(error.message, "error"); }
 }
+function openExternalTab(url) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.referrerPolicy = "no-referrer";
+  link.hidden = true;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  toast("Opening the website in a new tab. If it does not appear, check your browser's pop-up settings.", "info");
+}
 export function initPreview() {
   document.querySelector("#urlForm").addEventListener("submit", event => { event.preventDefault(); loadUrl(document.querySelector("#websiteUrl").value); });
   document.querySelector("#previewUrlForm").addEventListener("submit", event => { event.preventDefault(); loadUrl(document.querySelector("#previewUrl").value); });
@@ -220,7 +232,7 @@ export function initPreview() {
   }));
   document.querySelector("#runResponsive").addEventListener("click", () => { setDimensions(document.querySelector("#testWidth").value, document.querySelector("#testHeight").value); showView("preview"); requestAnimationFrame(updatePreviewScale); toast("Viewport applied. Full responsive quality still needs review."); const result = { id: crypto.randomUUID?.() || String(Date.now()), title:"Responsive viewport applied", status:"warning", detail: state.width + " × " + state.height + " preview viewport applied. This confirms the frame size only, not the target site's responsive quality.", date:new Date().toISOString() }; state.results.unshift(result); document.dispatchEvent(new CustomEvent("webmotion:result-added", { detail: result })); });
   document.querySelectorAll("[data-preset]").forEach(button => button.addEventListener("click", () => { const [w,h] = presets[button.dataset.preset]; setDimensions(w,h); }));
-  document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); window.open(state.currentUrl, "_blank", "noopener,noreferrer"); });
+  document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); openExternalTab(state.currentUrl); });
   document.querySelector("#websiteFrame").addEventListener("load", event => {
     const frame = event.currentTarget;
     if (!state.currentUrl || frame.src === "about:blank" || new URL(frame.src, window.location.href).href !== state.currentUrl) return;
