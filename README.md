@@ -10,7 +10,7 @@ WebMotion is a focused website viewport preview and manual QA documentation work
 - URL normalization and contained website preview.
 - Desktop, laptop, tablet, mobile, and custom viewport presets.
 - Desktop/laptop visual pointer simulator.
-- Manual responsive, animation, interaction, and transition review.
+- Manual viewport, animation, interaction, and transition review.
 - Provenance-aware report, local session save/restore, history management, and print-to-PDF.
 - Settings, reduced-motion preference, local JSON export, clipboard feedback, and help/legal summaries.
 - Seven-step hands-on Interactive Product Tour, offered on first visit and restartable from Overview or Help & Feedback.
@@ -76,7 +76,7 @@ WebMotion/
 
 ## Project identity
 
-WebMotion is a Gallagher’s Studio development project. The product attribution is displayed in the workspace sidebar and site footer.
+WebMotion is a product by Gallagher’s Studio. The product endorsement appears in the workspace sidebar and landing-page footer.
 
 ## QA status
 
