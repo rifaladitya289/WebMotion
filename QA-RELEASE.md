@@ -19,7 +19,7 @@ Also test actual phone portrait/landscape, tablet, laptop, and desktop displays.
 
 - [ ] Landing navigation anchors scroll to the correct sections.
 - [ ] Mobile landing menu opens, closes, and updates `aria-expanded`.
-- [ ] Start Testing opens the workspace once; no duplicate CTA behavior.
+- [ ] Start a review opens the workspace once; no duplicate CTA behavior.
 - [ ] Dashboard URL accepts a full HTTPS URL and a bare domain.
 - [ ] Invalid URL and non-HTTP(S) schemes show a useful error.
 - [ ] Loading a new URL clears previous findings and checklist selections.
@@ -31,17 +31,17 @@ Also test actual phone portrait/landscape, tablet, laptop, and desktop displays.
 - [ ] Mobile workspace drawer opens and closes with its button, close control, overlay, and Escape.
 - [ ] Fullscreen enters and exits; button label stays synchronized.
 - [ ] Keyboard shortcuts work without intercepting text typed into form controls.
-- [ ] Privacy and Terms dialogs open and close.
+- [ ] Privacy Summary and Use Guidelines dialogs open and close.
 
 ## 3. Testing Tools and Results
 
-- [ ] Responsive presets apply the selected viewport and record a warning, not an automatic pass.
+- [ ] Responsive presets apply the selected viewport without creating a QA result.
 - [ ] Responsive notes save to Results.
 - [ ] Animation timer starts, stops, and resets correctly.
 - [ ] Animation checklist selections appear once in Results and disappear when unchecked.
 - [ ] Interaction and Transition checklist selections update Results correctly.
 - [ ] Manual observations save and display safely, including text containing HTML-like characters.
-- [ ] Results totals match the displayed items.
+- [ ] Report totals match the displayed items and provenance categories; no hard-coded test counts appear.
 - [ ] Print opens the browser print dialog; verify Save as PDF manually.
 - [ ] Save session stores the current URL and findings.
 - [ ] Reopen restores the saved URL and checklist states.
@@ -56,7 +56,7 @@ Also test actual phone portrait/landscape, tablet, laptop, and desktop displays.
 - [ ] Pointer follows mouse hover/drag and touch drag without scrolling the parent page.
 - [ ] Arrow keys move the pointer when the pad is focused.
 - [ ] Coordinate readout updates and remains within the preview viewport.
-- [ ] Left/right controls explain that external iframe clicks are blocked.
+- [ ] Left/right click cues clearly state that they do not send input to the external website.
 - [ ] Scroll attempts explain the iframe limitation; no false success message appears.
 
 **Expected behavior:** this build is a visual pointer simulator. Real external-page click, right-click, and scroll forwarding are not supported.
@@ -120,3 +120,23 @@ Do not merge to `main` until:
 5. The Virtual Mouse is not advertised as real remote input.
 6. Known failures are fixed and their regression tests pass.
 7. README and AUDIT.md reflect the shipped behavior.
+
+
+## 10. Product identity and report integrity regression checks
+
+- [ ] Landing headline and description explain viewport preview and manual QA without promising perfection or automation.
+- [ ] Sidebar and page heading use the same Review Tools label.
+- [ ] Gallagher’s Studio attribution reads “A product by Gallagher’s Studio” consistently.
+- [ ] The footer uses the same product promise as the landing page.
+- [ ] Results contain no hard-coded “Not automated” count or misleading Passed metric.
+- [ ] Manual checklist entries are labeled Manual observation.
+- [ ] Browser restrictions are labeled Browser limitation.
+- [ ] Verified checks remain zero unless a real automated verification routine with provenance is implemented.
+- [ ] Legacy saved entries without provenance are not treated as verified.
+- [ ] Applying a viewport does not create a QA report entry.
+- [ ] Print/PDF output includes the report disclaimer.
+- [ ] Privacy Summary and Use Guidelines are described as product information, not certified legal documents.
+- [ ] README tree lists all current CSS and JavaScript modules.
+- [ ] Shared color, typography, spacing, radius, and motion tokens are sourced from `css/tokens.css`.
+
+**Current source status:** code changes are applied, but all browser/device checks remain Not Tested until run manually. Do not mark any item Pass based on source inspection.
