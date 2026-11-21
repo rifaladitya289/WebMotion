@@ -25,7 +25,7 @@
   <div class="app-shell">
     <header class="site-header" id="siteHeader">
       <a class="wordmark" href="#home" aria-label="WebMotion home"><span>Web</span><strong>Motion</strong></a>
-      <button class="icon-button mobile-menu-button" id="mobileMenuButton" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <button class="icon-button mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open navigation" aria-controls="landingNav" aria-expanded="false">☰</button>
       <nav class="landing-nav" id="landingNav" aria-label="Main navigation">
         <a href="#home" class="nav-link active">Home</a>
         <a href="#features" class="nav-link">Features</a>
@@ -83,7 +83,7 @@
 
       <section class="workspace-page hidden" id="workspacePage" aria-label="WebMotion workspace">
         <aside class="sidebar" id="sidebar">
-          <div class="sidebar-brand"><a class="wordmark" href="#" data-action="go-home"><span>Web</span><strong>Motion</strong></a><button class="icon-button sidebar-close" id="sidebarClose" aria-label="Close menu">×</button></div>
+          <div class="sidebar-brand"><a class="wordmark" href="#" data-action="go-home"><span>Web</span><strong>Motion</strong></a><button class="icon-button sidebar-close" id="sidebarClose" type="button" aria-label="Close workspace menu">×</button></div>
           <div class="workspace-label">OVERVIEW</div>
           <nav class="side-nav" aria-label="Overview">
             <button class="side-link active" data-view="overview"><span>⌂</span> Dashboard</button>
@@ -106,7 +106,7 @@
         <div class="workspace-main">
           <header class="workspace-topbar">
             <button class="button button-secondary button-small workspace-back-button" id="backToLanding" type="button">← Home</button>
-            <button class="icon-button workspace-menu-button" id="workspaceMenuButton" aria-label="Open menu">☰</button>
+            <button class="icon-button workspace-menu-button" id="workspaceMenuButton" type="button" aria-label="Open workspace menu" aria-controls="sidebar" aria-expanded="false">☰</button>
             <div class="breadcrumbs"><span>Workspace</span><b>/</b><strong id="currentViewName">Overview</strong></div>
             <div class="topbar-actions"><span class="connection-label"><i></i> Local session</span><button class="button button-small button-secondary" id="fullscreenButton">Fullscreen</button></div>
           </header>
