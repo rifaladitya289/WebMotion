@@ -1,0 +1,28 @@
+/* History archive — structured session rows with clear actions */
+#view-history .page-heading{align-items:center;margin-bottom:24px}
+#view-history .page-heading h1{font-size:clamp(28px,3vw,36px);letter-spacing:-1.4px}
+#view-history .page-heading p{line-height:1.7}
+#view-history .page-heading>.button{flex:0 0 auto}
+#view-history .history-list{display:grid;gap:10px}
+#view-history .history-item{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px;padding:18px 20px;background:linear-gradient(145deg,rgba(36,28,54,.86),rgba(23,18,35,.96));border:1px solid rgba(190,160,255,.13);border-radius:10px;transition:border-color .18s ease,transform .18s ease}
+#view-history .history-item:hover{border-color:rgba(173,133,255,.38);transform:translateY(-1px)}
+#view-history .history-item>div:first-child{min-width:0;padding-left:35px;position:relative}
+#view-history .history-item>div:first-child:before{content:"↗";position:absolute;left:0;top:2px;width:25px;height:25px;display:grid;place-items:center;border:1px solid rgba(173,133,255,.2);border-radius:7px;background:rgba(149,101,255,.1);color:#C8AEFF;font-size:13px}
+#view-history .history-item strong{display:block;color:#F2EDF9;font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+#view-history .history-item small{display:block;margin-top:5px;color:#8F849F;font-size:10px;line-height:1.5}
+#view-history .history-item>div:last-child{display:flex;align-items:center;gap:12px;white-space:nowrap}
+#view-history .history-item .button{min-height:33px;border-radius:7px}
+#view-history .history-item .text-button{font-size:10px;color:#A99BB9}
+#view-history .history-item .text-button:hover{color:#FFAAAA}
+#view-history #historyList>.empty-state{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 18px;border:1px dashed rgba(190,160,255,.2);border-radius:10px;background:rgba(24,19,37,.48);text-align:center}
+#view-history #historyList>.empty-state>span{width:44px;height:44px;display:grid;place-items:center;margin-bottom:11px;border-radius:12px;background:rgba(149,101,255,.12);color:#C7A8FF;font-size:22px}
+#view-history #historyList>.empty-state strong{font:600 15px var(--font-heading);color:#F4EFFB}
+#view-history #historyList>.empty-state p{max-width:300px;margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.7}
+@media(max-width:650px){
+ #view-history .page-heading{align-items:flex-start;flex-direction:column;gap:14px}
+ #view-history .page-heading>.button{width:100%}
+ #view-history .history-item{grid-template-columns:minmax(0,1fr);gap:13px;padding:15px}
+ #view-history .history-item>div:last-child{justify-content:flex-start;padding-left:35px}
+}
+@media(prefers-reduced-motion:reduce){#view-history .history-item{transition:none}#view-history .history-item:hover{transform:none}}
+@media print{#view-history .history-item{background:#fff;color:#17131f;border:1px solid #ddd;break-inside:avoid}#view-history .history-item strong{color:#17131f}}
