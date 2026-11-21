@@ -1,0 +1,44 @@
+/* Settings & Help — calm, readable preference and support surfaces */
+#view-settings,#view-help{max-width:1040px}
+#view-settings .page-heading,#view-help .page-heading{margin-bottom:24px}
+#view-settings .page-heading h1,#view-help .page-heading h1{font-size:clamp(28px,3vw,36px);letter-spacing:-1.3px}
+#view-settings .page-heading p,#view-help .page-heading p{max-width:560px;line-height:1.75}
+#view-settings .settings-card,#view-help .settings-card{position:relative;margin:0 0 13px;padding:21px 23px;background:linear-gradient(145deg,rgba(36,28,54,.84),rgba(23,18,35,.94));border:1px solid rgba(190,160,255,.13);border-radius:11px;box-shadow:0 8px 26px rgba(0,0,0,.08)}
+#view-settings .settings-card h3,#view-help .settings-card h3{margin:0 0 15px;color:#F1ECF8;font-size:13px;font-weight:650;letter-spacing:.1px}
+#view-settings .setting-row{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:62px;padding:12px 0;border-top:1px solid rgba(190,160,255,.09);cursor:pointer}
+#view-settings .setting-row:first-of-type{border-top:0;padding-top:2px}
+#view-settings .setting-row>span:first-child{display:grid;gap:5px}
+#view-settings .setting-row strong{color:#E9E2F2;font-size:11px;font-weight:600}
+#view-settings .setting-row small,#view-settings .settings-copy,#view-help .settings-copy{color:#9A90A8;font-size:10px;line-height:1.8}
+#view-settings .setting-row input[type=checkbox]{appearance:none;position:relative;flex:0 0 38px;width:38px;height:22px;border:1px solid rgba(190,160,255,.25);border-radius:20px;background:#292235;cursor:pointer;transition:background .18s,border-color .18s}
+#view-settings .setting-row input[type=checkbox]:before{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#A79BB5;transition:transform .18s,background .18s}
+#view-settings .setting-row input[type=checkbox]:checked{background:#7546C8;border-color:#A77AFF}
+#view-settings .setting-row input[type=checkbox]:checked:before{transform:translateX(16px);background:#fff}
+#view-settings .setting-row input[type=checkbox]:focus-visible,#view-settings button:focus-visible,#view-help button:focus-visible,#view-help select:focus-visible,#view-help textarea:focus-visible{outline:2px solid #B895FF;outline-offset:3px}
+#view-settings .setting-value{padding:7px 10px;border:1px solid rgba(173,133,255,.2);border-radius:7px;background:rgba(149,101,255,.1);color:#C9B3F2;font-size:10px}
+#view-settings .settings-copy,#view-help .settings-copy{margin:0 0 13px}
+#view-settings .settings-card .button{min-height:36px}
+#view-help .settings-card h3{display:flex;align-items:center;gap:9px}
+#view-help .settings-card h3:before{content:"";width:6px;height:6px;border-radius:50%;background:#A77AFF;box-shadow:0 0 12px rgba(167,122,255,.65)}
+#view-help .feedback-form{display:grid;gap:9px}
+#view-help .feedback-form label{margin-top:5px;color:#DCD3E8;font-size:10px;font-weight:600}
+#view-help .feedback-form select,#view-help .feedback-form textarea{width:100%;padding:11px 12px;border:1px solid rgba(190,160,255,.18);border-radius:8px;background:#171321;color:#EEE8F6;font:inherit;font-size:11px}
+#view-help .feedback-form select{min-height:40px}
+#view-help .feedback-form textarea{min-height:112px;resize:vertical;line-height:1.65}
+#view-help .feedback-form textarea::placeholder{color:#746A80}
+#view-help .feedback-form .button{justify-self:start;margin-top:5px;min-height:37px}
+#view-help .feedback-form>small{color:#82788F;font-size:9px;line-height:1.6}
+@media(max-width:650px){
+ #view-settings .settings-card,#view-help .settings-card{padding:17px 16px;border-radius:9px}
+ #view-settings .setting-row{gap:12px}
+ #view-settings .setting-row small{max-width:230px}
+ #view-settings .setting-value{white-space:nowrap}
+ #view-help .feedback-form .button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ #view-settings .setting-row input[type=checkbox],#view-settings .setting-row input[type=checkbox]:before{transition:none}
+}
+@media print{
+ #view-settings .settings-card,#view-help .settings-card{background:#fff;border:1px solid #ddd;box-shadow:none;break-inside:avoid}
+ #view-settings .settings-card h3,#view-help .settings-card h3,#view-settings .setting-row strong{color:#17131f}
+}
