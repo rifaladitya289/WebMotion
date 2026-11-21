@@ -80,7 +80,7 @@ function ensureLayer() {
   if (layer) return;
   layer = document.createElement("div");
   layer.className = "tour-layer";
-  layer.innerHTML = '<div class="tour-scrim" aria-hidden="true"></div><section class="tour-panel" role="dialog" aria-modal="true" aria-labelledby="tourTitle" aria-describedby="tourDescription"></section>';
+  layer.innerHTML = '<div class="tour-scrim" aria-hidden="true"></div><section class="tour-panel" role="dialog" aria-modal="false" aria-labelledby="tourTitle" aria-describedby="tourDescription"></section>';
   document.body.append(layer);
   panel = layer.querySelector(".tour-panel");
   layer.addEventListener("click", event => {
@@ -119,7 +119,7 @@ function renderStep(step) {
   panel.querySelector("[data-tour-back]").addEventListener("click", goBack);
   panel.querySelector("[data-tour-finish-step]")?.addEventListener("click", finishTour);
   clearSpotlight();
-  const target = document.querySelector(step.target);
+  const target = step.target ? document.querySelector(step.target) : null;
   if (target) {
     target.classList.add("tour-spotlight");
     target.scrollIntoView({ block: "center", behavior: document.body.classList.contains("reduce-motion") ? "auto" : "smooth" });
