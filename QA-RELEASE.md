@@ -49,10 +49,10 @@ Also test actual phone portrait/landscape, tablet, laptop, and desktop displays.
 - [ ] Clear history asks for confirmation by default and honors the disabled-confirmation setting.
 - [ ] Reload the page and verify saved history remains available on the same browser/device.
 
-## 4. Virtual Mouse expectations
+## 4. Virtual Pointer expectations
 
-- [ ] Virtual Mouse appears for Desktop and Laptop only.
-- [ ] Virtual Mouse is hidden for Tablet and Mobile.
+- [ ] Virtual Pointer appears for Desktop and Laptop only.
+- [ ] Virtual Pointer is hidden for Tablet and Mobile.
 - [ ] Pointer follows mouse hover/drag and touch drag without scrolling the parent page.
 - [ ] Arrow keys move the pointer when the pad is focused.
 - [ ] Coordinate readout updates and remains within the preview viewport.
