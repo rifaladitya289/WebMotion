@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="css/history-redesign.css">
 <link rel="stylesheet" href="css/settings-help-redesign.css">
 <link rel="stylesheet" href="css/studio-attribution.css">
+<link rel="stylesheet" href="css/tour.css">
 </head>
 <body>
   <div class="app-shell">
@@ -118,7 +119,7 @@
                 <form id="urlForm" class="url-form"><label for="websiteUrl">Website URL</label><div class="url-input-row"><input id="websiteUrl" type="text" inputmode="url" placeholder="https://example.com" autocomplete="url" required><button class="button button-primary" type="submit">Load Website <span>→</span></button></div><small>Some websites block embedded previews. WebMotion explains this browser limitation.</small></form>
               </div>
               <section class="workflow-guide" aria-labelledby="workflowTitle">
-                <div class="workflow-guide-heading"><div><span class="section-kicker">YOUR WORKFLOW</span><h2 id="workflowTitle">A simple path from preview to report</h2><p>Follow these three steps. You can move between them at any time.</p></div><span class="workflow-time">3 STEPS</span></div>
+                <div class="workflow-guide-heading"><div><span class="section-kicker">YOUR WORKFLOW</span><h2 id="workflowTitle">A simple path from preview to report</h2><p>Follow these three steps. You can move between them at any time.</p></div><div class="workflow-guide-actions"><span class="workflow-time">3 STEPS</span><button class="text-button" id="startTourOverview" type="button">Take interactive tour ↗</button></div></div>
                 <div class="workflow-steps">
                   <button class="workflow-step" data-view="preview" type="button"><span class="workflow-step-number">01</span><span class="workflow-step-copy"><strong>Preview your website</strong><small>Choose desktop, laptop, tablet, or mobile.</small></span><span class="workflow-step-arrow">→</span></button>
                   <button class="workflow-step" data-view="testing" type="button"><span class="workflow-step-number">02</span><span class="workflow-step-copy"><strong>Run your checks</strong><small>Review responsive, animation, and interactions.</small></span><span class="workflow-step-arrow">→</span></button>
@@ -169,6 +170,7 @@
 
             <section class="workspace-view hidden" id="view-help">
               <div class="page-heading"><div><span class="section-kicker">SUPPORT</span><h1>Help &amp; Feedback</h1><p>Understand preview limitations and share feedback.</p></div></div>
+              <div class="settings-card tour-help-card"><h3>Interactive Product Tour</h3><p class="settings-copy">Learn the WebMotion workflow by trying its features yourself. You can skip the tour at any time and restart it whenever you need.</p><button class="button button-primary button-small" id="startTourButton" type="button">Start interactive tour ↗</button></div>
               <div class="settings-card"><h3>Why might a website not load?</h3><p class="settings-copy">A website can block being displayed inside another page using CSP frame-ancestors or X-Frame-Options. Browser extensions, authentication, network errors, and mixed-content rules can also affect previews. WebMotion does not bypass these restrictions.</p></div>
               <div class="settings-card"><h3>What can WebMotion inspect?</h3><p class="settings-copy">The browser's same-origin policy prevents this app from reading most cross-origin website content. Responsive viewport controls work on the frame, but detailed animation and DOM inspection may be unavailable for external sites. Use the manual checklists when needed.</p></div>
               <div class="settings-card"><h3>Send feedback</h3><form id="feedbackForm" class="feedback-form"><label for="feedbackType">Feedback type</label><select id="feedbackType"><option>Bug report</option><option>Feature request</option><option>General feedback</option></select><label for="feedbackMessage">Message</label><textarea id="feedbackMessage" rows="4" required placeholder="Tell us what happened or what could be improved..."></textarea><button class="button button-primary button-small" type="submit">Copy feedback</button><small>Copies the feedback text so you can paste it into your preferred message app.</small></form></div>
