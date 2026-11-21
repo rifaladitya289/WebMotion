@@ -139,4 +139,10 @@ Do not merge to `main` until:
 - [ ] README tree lists all current CSS and JavaScript modules.
 - [ ] Shared color, typography, spacing, radius, and motion tokens are sourced from `css/tokens.css`.
 
-**Current source status:** code changes are applied, but all browser/device checks remain Not Tested until run manually. Do not mark any item Pass based on source inspection.
+## 11. Manual QA run record — 21 November 2026
+
+**Result: User-reported overall PASS.** The project owner reports that they opened WebMotion through a local HTTP server in a mobile browser, reviewed the website as a whole, checked all seven workspace views, and found the site operating normally. The owner also explicitly reported the phone and tablet layouts as normal.
+
+This is a record of the owner's manual test report, not an independently witnessed test session. The detailed checkboxes above are intentionally left unmarked because individual outcomes for every sub-check, exact browser version, viewport dimensions, physical device models, screen-reader coverage, and performance measurements were not separately supplied. Do not interpret this summary as proof that every listed edge case was individually exercised.
+
+**Release note:** the latest commit has no configured/reported CI checks. Verify the GitHub Pages deployment after merging before calling the public release live.
