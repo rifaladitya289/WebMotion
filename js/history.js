@@ -20,7 +20,7 @@ export function initHistory() {
     const previous = state.history;
     state.history = [session, ...state.history].slice(0,50);
     if (!writeJSON(STORAGE_KEYS.history,state.history)) { state.history = previous; return toast("Storage is full. Export your data or remove older sessions.", "error"); }
-    renderHistory(); toast("Session saved on this device.", "success");
+    renderHistory(); toast("Session saved on this device.", "success"); document.dispatchEvent(new CustomEvent("webmotion:session-saved", { detail: { id: session.id, url: session.url } }));
   });
   document.querySelector("#clearHistory").addEventListener("click", () => {
     const settings = readJSON(STORAGE_KEYS.settings,{confirmClear:true});
