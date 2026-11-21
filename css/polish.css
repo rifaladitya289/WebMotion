@@ -145,3 +145,32 @@ body{background:radial-gradient(ellipse at 50% -18%,rgba(126,82,205,.16),transpa
  .result-summary>div{padding:11px}
  .result-number{font-size:22px}
 }
+
+/* Clearer navigation and first-run guidance */
+.sidebar-section-label{margin-top:24px}
+.sidebar .workspace-label:not(:first-of-type){padding-top:2px}
+.side-nav+.workspace-label{margin-top:22px}
+.workflow-guide{margin-top:20px;padding:24px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(145deg,rgba(31,24,45,.92),rgba(20,15,30,.96))}
+.workflow-guide-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
+.workflow-guide-heading h2{font:600 18px var(--font-heading);letter-spacing:-.55px;margin:5px 0}
+.workflow-guide-heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
+.workflow-time{font-size:9px;letter-spacing:1.1px;color:#c6adff;border:1px solid var(--border);background:rgba(154,120,245,.07);border-radius:20px;padding:6px 10px;white-space:nowrap}
+.workflow-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.workflow-step{display:flex;align-items:center;gap:12px;min-width:0;padding:15px 13px;text-align:left;border:1px solid rgba(205,184,255,.12);border-radius:10px;background:rgba(255,255,255,.018);color:#fff;cursor:pointer}
+.workflow-step:hover{background:rgba(154,120,245,.08);border-color:rgba(169,137,255,.4);transform:translateY(-1px)}
+.workflow-step-number{display:grid;place-items:center;flex:0 0 34px;height:34px;border-radius:9px;background:rgba(154,120,245,.12);color:#c8afff;font:600 12px var(--font-heading)}
+.workflow-step-copy{display:grid;gap:3px;min-width:0}
+.workflow-step-copy strong{font-size:11px;font-weight:600}
+.workflow-step-copy small{font-size:9px;line-height:1.5;color:var(--muted)}
+.workflow-step-arrow{margin-left:auto;color:#b99aff;font-size:16px}
+@media(max-width:950px){
+ .workflow-steps{grid-template-columns:1fr}
+ .workflow-step{padding:13px}
+}
+@media(max-width:700px){
+ .workflow-guide{padding:17px;margin-top:15px}
+ .workflow-guide-heading h2{font-size:16px}
+ .workflow-step-copy strong{font-size:11px}
+ .workflow-step-copy small{font-size:10px}
+ .sidebar-section-label{margin-top:19px}
+}
