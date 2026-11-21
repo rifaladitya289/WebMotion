@@ -1,15 +1,42 @@
 import { state, toast, formatDate } from "./state.js";
-function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char])); }
-export function renderResults() {
-  const results = state.results;
-  document.querySelector("#resultTotal").textContent = results.length;
-  document.querySelector("#resultPassed").textContent = results.filter(x => x.status === "passed").length;
-  document.querySelector("#resultWarnings").textContent = results.filter(x => x.status === "warning").length;
-  document.querySelector("#resultNotTested").textContent = 4;
-  const list = document.querySelector("#resultList");
-  if (!results.length) { list.innerHTML = '<div class="empty-state"><span>▤</span><strong>No results recorded</strong><p>Run a check or save an observation to build your report.</p></div>'; return; }
-  list.innerHTML = results.map(item => '<article class="result-item"><div><strong>' + escapeHTML(item.title) + '</strong><p>' + escapeHTML(item.detail) + '</p><p>' + formatDate(item.date) + '</p></div><span class="status-pill ' + escapeHTML(item.status) + '">' + (item.status === "passed" ? "Passed" : "Warning / Manual") + '</span></article>').join("");
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 }
+
+function itemKind(item) {
+  if (["manual_observation", "capability_limit", "verified_check"].includes(item.kind)) {
+    if (item.kind === "verified_check" && item.source !== "webmotion_automated") return "legacy_unverified";
+    return item.kind;
+  }
+  // Older locally saved entries have no provenance. Never reinterpret them as verified.
+  return item.status === "passed" ? "legacy_unverified" : "manual_observation";
+}
+
+export function renderResults() {
+  const results = Array.isArray(state.results) ? state.results : [];
+  const kinds = results.map(itemKind);
+  document.querySelector("#resultTotal").textContent = results.length;
+  document.querySelector("#resultManual").textContent = kinds.filter(kind => kind === "manual_observation").length;
+  document.querySelector("#resultLimits").textContent = kinds.filter(kind => kind === "capability_limit").length;
+  document.querySelector("#resultVerified").textContent = kinds.filter(kind => kind === "verified_check").length;
+
+  const list = document.querySelector("#resultList");
+  if (!results.length) {
+    list.innerHTML = '<div class="empty-state"><span>▤</span><strong>No report entries yet</strong><p>Save a manual observation or record a browser limitation to build your session report.</p></div>';
+    return;
+  }
+
+  list.innerHTML = results.map((item, index) => {
+    const kind = kinds[index];
+    const label = kind === "capability_limit" ? "Browser limitation"
+      : kind === "verified_check" ? "Verified check"
+      : kind === "legacy_unverified" ? "Unverified legacy item"
+      : "Manual observation";
+    return '<article class="result-item"><div><strong>' + escapeHTML(item.title) + '</strong><p>' + escapeHTML(item.detail) + '</p><p>' + formatDate(item.date) + '</p></div><span class="status-pill ' + kind + '">' + label + '</span></article>';
+  }).join("");
+}
+
 export function initResults() {
   document.addEventListener("webmotion:refresh-results", renderResults);
   document.addEventListener("webmotion:result-added", renderResults);
