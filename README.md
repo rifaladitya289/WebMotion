@@ -74,4 +74,4 @@ WebMotion is a Gallagher’s Studio development project. The product attribution
 
 ## QA status
 
-See [PRODUCT-IDENTITY-AUDIT.md](PRODUCT-IDENTITY-AUDIT.md) for the product identity and anti-AI-slop review. See [AUDIT.md](AUDIT.md) for source checks, fixes, known limitations, and current release status. Use [QA-RELEASE.md](QA-RELEASE.md) for the manual browser/device test matrix. Source checks are not a substitute for runtime testing.
+See [PRODUCT-IDENTITY-GUIDELINES.md](PRODUCT-IDENTITY-GUIDELINES.md) for the approved product identity rules. See [PRODUCT-IDENTITY-AUDIT.md](PRODUCT-IDENTITY-AUDIT.md) for the product identity and anti-AI-slop review. See [AUDIT.md](AUDIT.md) for source checks, fixes, known limitations, and current release status. Use [QA-RELEASE.md](QA-RELEASE.md) for the manual browser/device test matrix. Source checks are not a substitute for runtime testing.
