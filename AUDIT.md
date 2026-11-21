@@ -92,3 +92,33 @@ A hands-on seven-step onboarding tour is implemented in this branch. First-time 
 **Status: source stabilization in progress; not production-certified.**
 
 The next release gate is the manual browser/device test matrix in `QA-RELEASE.md`. Record each result as Pass, Fail, or Not Tested. Fix failures and repeat the affected regression checks before merging this branch into `main`.
+
+
+## Current product-identity remediation — superseding status
+
+This section supersedes any earlier snapshot in this document that reports the old Results metrics, old “Preview. Test. Perfect.” positioning, the old Testing Tools label, or earlier HTML/CSS counts.
+
+### Implemented after the initial source audit
+- Results now derives its counts from item provenance: manual observations, browser limitations, and verified checks.
+- A verified check is counted only when it has `kind: "verified_check"`, `source: "webmotion_automated"`, and `status: "passed"`. No current feature creates such an item, so the verified count remains zero.
+- Legacy saved entries without provenance are never upgraded to verified checks. The old “Responsive viewport applied” record is shown as an unverified legacy item.
+- Applying a viewport changes the preview frame only and no longer creates a report entry.
+- The report disclaimer remains visible in print/PDF output.
+- Landing and workspace copy now uses “Preview. Compare. Record.” and accurately describes manual QA.
+- The feature list now distinguishes viewport preview, animation review, interaction review, and local sessions.
+- The navigation and page heading use the consistent “Review Tools” label.
+- The pointer simulator is labeled “Virtual Pointer”; click controls are labeled as cues, not remote website input.
+- `css/tokens.css` is the single owner of shared root design tokens. Competing root declarations were removed from `style.css` and `polish.css`.
+- `PRODUCT-IDENTITY-GUIDELINES.md` defines the approved product promise, brand relationship, visual system, copy vocabulary, component ownership, and anti-AI-slop checklist.
+
+### Latest static source checks
+- 94 HTML IDs; no duplicates.
+- 112 literal JavaScript ID-selector references. The only selector IDs not present in static HTML are `tourTitle` and `tourDescription`, which are intentionally created inside the tour dialog at runtime.
+- All 13 linked local stylesheets exist; CSS brace counts are balanced.
+- `css/tokens.css` is the only stylesheet with a shared `:root` token declaration.
+- All checked relative JavaScript imports resolve to tracked modules.
+- No old Results metric IDs or hard-coded “Not automated” count remain.
+- Applying the responsive viewport no longer dispatches a report result.
+
+### QA state — not a release pass
+No interactive browser session, screen-reader test, physical-device matrix, iframe compatibility test, or PDF print verification has been run for these latest changes. The repository has no reported commit status checks for the latest source commit. Record the actual outcomes in `QA-RELEASE.md` before changing the pull request from draft or merging it.
