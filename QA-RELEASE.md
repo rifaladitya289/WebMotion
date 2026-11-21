@@ -100,7 +100,7 @@ Also test actual phone portrait/landscape, tablet, laptop, and desktop displays.
 - [ ] Selecting the Mobile preset advances to Results.
 - [ ] Saving a session advances only after local storage succeeds.
 - [ ] History displays the newly saved session.
-- [ ] Visiting History advances to Settings.
+- [ ] Selecting Reopen on the saved session restores it and advances the tour to Settings.
 - [ ] Changing Reduce motion advances to Help and persists the preference.
 - [ ] Finish tour completes and stores progress.
 - [ ] Maybe later, Skip tour, the close button, and Escape dismiss the tour safely.
