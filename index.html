@@ -80,15 +80,19 @@
       <section class="workspace-page hidden" id="workspacePage" aria-label="WebMotion workspace">
         <aside class="sidebar" id="sidebar">
           <div class="sidebar-brand"><a class="wordmark" href="#" data-action="go-home"><span>Web</span><strong>Motion</strong></a><button class="icon-button sidebar-close" id="sidebarClose" aria-label="Close menu">×</button></div>
-          <div class="workspace-label">WORKSPACE</div>
-          <nav class="side-nav">
-            <button class="side-link active" data-view="overview"><span>⌂</span> Overview</button>
+          <div class="workspace-label">GET STARTED</div>
+          <nav class="side-nav" aria-label="Getting started">
+            <button class="side-link active" data-view="overview"><span>⌂</span> Dashboard</button>
+          </nav>
+          <div class="workspace-label sidebar-section-label">YOUR WORKSPACE</div>
+          <nav class="side-nav" aria-label="Workspace tools">
             <button class="side-link" data-view="preview"><span>▣</span> Website Preview</button>
             <button class="side-link" data-view="testing"><span>⌁</span> Testing Tools</button>
             <button class="side-link" data-view="results"><span>▤</span> Results</button>
-            <button class="side-link" data-view="history"><span>◷</span> History</button>
           </nav>
           <div class="sidebar-bottom">
+            <div class="workspace-label">YOUR DATA</div>
+            <button class="side-link" data-view="history"><span>◷</span> Session History</button>
             <button class="side-link" data-view="settings"><span>⚙</span> Settings</button>
             <button class="side-link" data-view="help"><span>?</span> Help &amp; Feedback</button>
             <div class="guest-card"><span class="guest-avatar">G</span><div><strong>Guest session</strong><small>Saved on this device</small></div></div>
@@ -103,11 +107,19 @@
           </header>
           <div class="workspace-content">
             <section class="workspace-view" id="view-overview">
-              <div class="page-heading"><div><span class="section-kicker">YOUR WORKSPACE</span><h1>Overview</h1><p>Start a preview session or return to a recent website.</p></div><span class="session-chip">GUEST MODE</span></div>
+              <div class="page-heading"><div><span class="section-kicker">YOUR WORKSPACE</span><h1>Dashboard</h1><p>Your starting point for previewing, testing, and reviewing a website.</p></div><span class="session-chip">GUEST MODE</span></div>
               <div class="url-start-card">
-                <div><span class="section-kicker">NEW TEST SESSION</span><h2>What are we testing today?</h2><p>Enter a public website URL to open its preview.</p></div>
+                <div><span class="section-kicker">STEP 01 · START A SESSION</span><h2>Which website would you like to review?</h2><p>Paste a public website address below. You can preview it before running any checks.</p></div>
                 <form id="urlForm" class="url-form"><label for="websiteUrl">Website URL</label><div class="url-input-row"><input id="websiteUrl" type="text" inputmode="url" placeholder="https://example.com" autocomplete="url" required><button class="button button-primary" type="submit">Start Testing <span>→</span></button></div><small>Some websites block embedded previews. WebMotion explains this browser limitation.</small></form>
               </div>
+              <section class="workflow-guide" aria-labelledby="workflowTitle">
+                <div class="workflow-guide-heading"><div><span class="section-kicker">YOUR WORKFLOW</span><h2 id="workflowTitle">A simple path from preview to report</h2><p>Follow these three steps. You can move between them at any time.</p></div><span class="workflow-time">3 STEPS</span></div>
+                <div class="workflow-steps">
+                  <button class="workflow-step" data-view="preview" type="button"><span class="workflow-step-number">02</span><span class="workflow-step-copy"><strong>Preview your website</strong><small>Choose desktop, laptop, tablet, or mobile.</small></span><span class="workflow-step-arrow">→</span></button>
+                  <button class="workflow-step" data-view="testing" type="button"><span class="workflow-step-number">03</span><span class="workflow-step-copy"><strong>Run your checks</strong><small>Review responsive, animation, and interactions.</small></span><span class="workflow-step-arrow">→</span></button>
+                  <button class="workflow-step" data-view="results" type="button"><span class="workflow-step-number">04</span><span class="workflow-step-copy"><strong>Review your report</strong><small>Save findings and revisit your session.</small></span><span class="workflow-step-arrow">→</span></button>
+                </div>
+              </section>
               <div class="overview-lower"><div class="panel-card"><div class="panel-heading"><div><h3>Quick access</h3><p>Jump into a workspace area.</p></div></div><div class="quick-grid"><button class="quick-card" data-view="preview"><span>▣</span><strong>Website Preview</strong><small>Open a URL</small></button><button class="quick-card" data-view="testing"><span>⌁</span><strong>Testing Tools</strong><small>Explore checks</small></button><button class="quick-card" data-view="results"><span>▤</span><strong>Results</strong><small>Review findings</small></button></div></div>
               <div class="panel-card"><div class="panel-heading"><div><h3>Recent testing</h3><p>Your latest local sessions.</p></div><button class="text-button" data-view="history">View history →</button></div><div id="recentList" class="recent-list"><div class="empty-state compact"><span>◷</span><strong>No sessions yet</strong><p>Your recent websites will appear here.</p></div></div></div></div>
             </section>
