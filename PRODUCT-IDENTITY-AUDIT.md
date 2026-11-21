@@ -327,3 +327,19 @@ The following source-level changes were applied after the initial audit:
 - Footer/sidebar attribution and legal-information labels were clarified.
 
 These changes have not yet received interactive browser or physical-device QA. See [PRODUCT-IDENTITY-GUIDELINES.md](PRODUCT-IDENTITY-GUIDELINES.md) for the product standards and [QA-RELEASE.md](QA-RELEASE.md) for the remaining validation gate.
+
+
+## Post-audit remediation status — 21 November 2026
+
+The following changes have been applied on the stabilization branch:
+- Landing and workspace copy now use the approved promise “Preview. Compare. Record.” and distinguish viewport changes from manual review.
+- The duplicated Website Preview feature card was replaced with Local Sessions so each landing feature communicates a distinct product capability.
+- Navigation and page heading now consistently call the tool area “Review Tools”.
+- The pointer panel is named “Virtual Pointer”; its click controls are described as cues, not remote input.
+- A canonical `css/tokens.css` now owns the shared design tokens. The base and polish stylesheets no longer define competing root token sets.
+- The report summary is provenance-aware, and the report disclaimer remains visible in print/PDF output.
+- README and QA-RELEASE were aligned with the revised terminology and source inventory.
+
+**Static source QA after these changes:** 94 unique HTML IDs; 112 literal JavaScript ID-selector references with only the two tour dialog IDs created dynamically; 13 stylesheet links resolve; CSS brace counts are balanced; `css/tokens.css` is the only shared root-token declaration; no obsolete result metric IDs remain; viewport application no longer creates a report entry.
+
+**Still outstanding:** interactive browser execution, the six-width viewport matrix, physical-device checks, accessibility/keyboard testing, iframe compatibility testing, and print-to-PDF verification. These must be recorded in `QA-RELEASE.md`; source inspection alone is not a release pass.
