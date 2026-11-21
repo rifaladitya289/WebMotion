@@ -56,7 +56,7 @@ WebMotion/
 │   ├── results-redesign.css
 │   ├── history-redesign.css
 │   ├── settings-help-redesign.css
-│   └── studio-attribution.css
+│   ├── studio-attribution.css\n│   └── tour.css
 └── js/
     ├── app.js
     ├── state.js
@@ -74,4 +74,4 @@ WebMotion is a Gallagher’s Studio development project. The product attribution
 
 ## QA status
 
-See [AUDIT.md](AUDIT.md) for source checks, fixes, known limitations, and current release status. Use [QA-RELEASE.md](QA-RELEASE.md) for the manual browser/device test matrix. Source checks are not a substitute for runtime testing.
+See [PRODUCT-IDENTITY-AUDIT.md](PRODUCT-IDENTITY-AUDIT.md) for the product identity and anti-AI-slop review. See [AUDIT.md](AUDIT.md) for source checks, fixes, known limitations, and current release status. Use [QA-RELEASE.md](QA-RELEASE.md) for the manual browser/device test matrix. Source checks are not a substitute for runtime testing.
