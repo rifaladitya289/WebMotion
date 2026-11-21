@@ -31,3 +31,11 @@
 @media(prefers-reduced-motion:reduce){
  .tour-progress span{transition:none}
 }
+
+.workflow-guide-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+.workflow-guide-actions .text-button{font-size:10px;white-space:nowrap}
+.tour-help-card .button{margin-top:4px}
+@media(max-width:600px){
+ .workflow-guide-actions{justify-content:flex-start}
+ .workflow-guide-actions .text-button{padding:7px 0}
+}
