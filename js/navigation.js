@@ -69,7 +69,7 @@ export function showView(view) {
   if (!valid.includes(view)) return;
   state.currentView = view;
   document.querySelectorAll(".workspace-view").forEach(section => section.classList.toggle("hidden", section.id !== "view-" + view));
-  document.querySelectorAll(".side-link[data-view]").forEach(button => button.classList.toggle("active", button.dataset.view === view));
+  document.querySelectorAll(".side-link[data-view]").forEach(button => { const active = button.dataset.view === view; button.classList.toggle("active", active); if (active) button.setAttribute("aria-current", "page"); else button.removeAttribute("aria-current"); });
   const names = { overview:"Dashboard",preview:"Website Preview",testing:"Testing Tools",results:"Results",history:"History",settings:"Settings",help:"Help & Feedback" };
   document.querySelector("#currentViewName").textContent = names[view];
   if (view === "results") document.dispatchEvent(new CustomEvent("webmotion:refresh-results"));
