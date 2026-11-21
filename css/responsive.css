@@ -130,3 +130,14 @@
   #view-preview #virtualMousePanel:not(.hidden){padding:9px}
   #view-preview .virtual-mouse-pad{height:92px;min-height:92px}
 }
+
+@media(min-width:761px) and (max-width:950px){
+  #view-preview #virtualMousePanel:not(.hidden){
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:
+      "heading buttons"
+      "pad pad"
+      "readout readout"
+      "note note";
+  }
+}
