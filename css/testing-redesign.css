@@ -1,0 +1,239 @@
+/* WebMotion — Testing Tools visual system */
+#view-testing .page-heading{align-items:center;margin-bottom:22px}
+#view-testing .page-heading h1{font-size:clamp(27px,3vw,34px);letter-spacing:-1.1px}
+#view-testing .page-heading p{max-width:600px;line-height:1.65}
+#view-testing .testing-layout{
+  display:grid;
+  grid-template-columns:190px minmax(0,1fr);
+  gap:16px;
+  align-items:start;
+}
+#view-testing .tool-tabs{
+  position:sticky;
+  top:16px;
+  display:grid;
+  gap:6px;
+  padding:8px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+#view-testing .tool-tab{
+  position:relative;
+  display:flex;
+  align-items:center;
+  min-height:43px;
+  padding:10px 12px;
+  border:1px solid transparent;
+  border-radius:8px;
+  color:#AFA4C0;
+  font-size:12px;
+  font-weight:500;
+  transition:background .18s ease,border-color .18s ease,color .18s ease;
+}
+#view-testing .tool-tab:hover{background:rgba(149,101,255,.08);color:#fff}
+#view-testing .tool-tab.active{
+  color:#fff;
+  background:rgba(149,101,255,.15);
+  border-color:rgba(171,135,255,.24);
+  box-shadow:none;
+}
+#view-testing .tool-tab.active:before{
+  content:"";
+  position:absolute;
+  left:-1px;
+  top:9px;
+  bottom:9px;
+  width:2px;
+  border-radius:2px;
+  background:var(--primary);
+}
+#view-testing .tool-panel{
+  min-width:0;
+  padding:clamp(17px,2.5vw,26px);
+  border-radius:12px;
+  background:linear-gradient(145deg,rgba(30,23,45,.98),rgba(20,16,31,.98));
+}
+#view-testing .tool-title{
+  align-items:flex-start;
+  gap:13px;
+  margin-bottom:22px;
+  padding-bottom:18px;
+  border-bottom:1px solid rgba(190,160,255,.1);
+}
+#view-testing .tool-symbol{
+  flex:0 0 42px;
+  width:42px;
+  height:42px;
+  border:1px solid rgba(171,135,255,.18);
+  border-radius:10px;
+  background:rgba(149,101,255,.12);
+}
+#view-testing .tool-title h2{font-size:18px;letter-spacing:-.35px}
+#view-testing .tool-title p{max-width:620px;font-size:11px;line-height:1.65}
+#view-testing .preset-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  margin-bottom:18px;
+}
+#view-testing .preset-card{
+  position:relative;
+  min-width:0;
+  padding:14px 12px;
+  border-radius:9px;
+  background:#171225;
+  transition:border-color .18s ease,background .18s ease,transform .18s ease;
+}
+#view-testing .preset-card:hover{
+  border-color:rgba(171,135,255,.5);
+  background:#211832;
+  transform:translateY(-1px);
+}
+#view-testing .preset-card strong{font-size:12px}
+#view-testing .preset-card small{font-size:10px;line-height:1.5}
+#view-testing .field-row{
+  align-items:end;
+  gap:12px;
+  padding:14px;
+  border:1px solid rgba(190,160,255,.1);
+  border-radius:9px;
+  background:rgba(12,9,20,.28);
+}
+#view-testing .field-row label{font-size:10px;font-weight:600;color:#C7BDD4}
+#view-testing .field-row input{
+  width:150px;
+  height:38px;
+  border-radius:7px;
+  font-size:12px;
+}
+#view-testing .responsive-qa-grid{
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:7px;
+  margin:13px 0 17px;
+}
+#view-testing .responsive-qa-grid button{
+  min-height:36px;
+  border-radius:7px;
+  background:#171225;
+  color:#CFC4DF;
+  font-size:10px;
+  transition:background .18s ease,border-color .18s ease;
+}
+#view-testing .responsive-qa-grid button:hover{
+  background:rgba(149,101,255,.14);
+  border-color:rgba(171,135,255,.5);
+}
+#view-testing #runResponsive{min-height:39px;border-radius:8px;padding-inline:16px}
+#view-testing .tool-footnote{font-size:10px;line-height:1.65}
+#view-testing .control-row{
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px;
+  border:1px solid rgba(190,160,255,.1);
+  border-radius:9px;
+  background:rgba(12,9,20,.25);
+}
+#view-testing .control-row .tool-footnote{margin:0;max-width:420px}
+#view-testing .animation-review-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin:15px 0;
+  padding:18px;
+  border:1px solid rgba(171,135,255,.2);
+  border-radius:10px;
+  background:linear-gradient(120deg,rgba(113,74,174,.14),rgba(17,13,27,.5));
+}
+#view-testing .animation-review-card>div:first-child{display:grid;gap:5px}
+#view-testing .animation-review-card strong{
+  font:600 clamp(25px,4vw,34px) var(--font-heading);
+  letter-spacing:1px;
+  font-variant-numeric:tabular-nums;
+}
+#view-testing .animation-review-card small{font-size:10px;color:var(--muted)}
+#view-testing .animation-timer-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#view-testing .animation-timer-actions button{border-radius:7px}
+#view-testing .checklist{
+  gap:0;
+  padding:5px 14px;
+  border-radius:10px;
+  background:rgba(12,9,20,.24);
+}
+#view-testing .checklist label{
+  min-height:43px;
+  padding:9px 0;
+  border-bottom:1px solid rgba(190,160,255,.09);
+  font-size:11px;
+  line-height:1.5;
+  cursor:pointer;
+}
+#view-testing .checklist label:last-child{border-bottom:0}
+#view-testing .checklist input{
+  flex:0 0 auto;
+  width:15px;
+  height:15px;
+  margin:0 2px 0 0;
+}
+#view-testing .tool-output{
+  padding:13px 15px;
+  border-radius:9px;
+  background:rgba(149,101,255,.07);
+  line-height:1.65;
+}
+#view-testing .manual-check{
+  margin-top:17px;
+  padding-top:17px;
+}
+#view-testing .manual-check label{font-size:11px;color:#E3DCEE}
+#view-testing .manual-check textarea{
+  min-height:94px;
+  padding:11px 12px;
+  border-radius:8px;
+  line-height:1.6;
+}
+#view-testing .manual-check button{min-height:35px;border-radius:7px}
+#view-testing button:focus-visible,
+#view-testing textarea:focus-visible,
+#view-testing input:focus-visible{
+  outline:2px solid rgba(190,160,255,.85);
+  outline-offset:2px;
+}
+@media(max-width:900px){
+  #view-testing .testing-layout{grid-template-columns:1fr}
+  #view-testing .tool-tabs{
+    position:static;
+    display:flex;
+    overflow-x:auto;
+    gap:5px;
+    padding:6px;
+  }
+  #view-testing .tool-tab{flex:1 0 auto;justify-content:center;min-height:39px;padding:9px 13px}
+  #view-testing .tool-tab.active:before{left:10px;right:10px;top:auto;bottom:-1px;width:auto;height:2px}
+}
+@media(max-width:600px){
+  #view-testing .tool-panel{padding:15px}
+  #view-testing .tool-title{gap:10px;margin-bottom:17px;padding-bottom:15px}
+  #view-testing .tool-symbol{flex-basis:37px;width:37px;height:37px}
+  #view-testing .tool-title h2{font-size:16px}
+  #view-testing .preset-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #view-testing .preset-card{padding:12px 10px}
+  #view-testing .field-row{gap:9px;padding:11px;flex-wrap:wrap}
+  #view-testing .field-row label{flex:1 1 120px}
+  #view-testing .field-row input{width:100%}
+  #view-testing .responsive-qa-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #view-testing .animation-review-card{align-items:flex-start;flex-direction:column;padding:14px}
+  #view-testing .animation-timer-actions{width:100%}
+  #view-testing .animation-timer-actions button{flex:1}
+  #view-testing .control-row{align-items:stretch;flex-direction:column}
+  #view-testing .control-row .button{width:100%}
+  #view-testing .checklist{padding:4px 11px}
+  #view-testing .checklist label{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  #view-testing .tool-tab,
+  #view-testing .preset-card,
+  #view-testing .responsive-qa-grid button{transition:none}
+  #view-testing .preset-card:hover{transform:none}
+}
