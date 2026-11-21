@@ -42,3 +42,91 @@
  #view-preview .virtual-mouse-panel:not(.hidden){flex-basis:122px;width:122px;min-width:122px;padding:9px 7px}
  #view-preview .virtual-mouse-pad{min-height:130px}
 }
+
+
+/* Final preview composition: device first, horizontal mouse workspace below */
+#view-preview #previewStage{
+  height:auto;
+  min-height:0;
+  max-height:none;
+  overflow:visible;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+  gap:14px;
+}
+#view-preview #devicePreviewColumn{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  min-height:0;
+  flex:0 0 auto;
+  justify-content:flex-start;
+  overflow:visible;
+}
+#view-preview #iframeScaleWrap{
+  max-width:100%;
+}
+#view-preview #iframeFrame{
+  max-width:none;
+}
+#view-preview #virtualMousePanel:not(.hidden){
+  display:grid;
+  grid-template-columns:minmax(150px,.8fr) minmax(220px,1.5fr) minmax(150px,.8fr);
+  grid-template-areas:
+    "heading pad buttons"
+    "readout pad note";
+  align-items:center;
+  gap:10px 14px;
+  width:100%;
+  min-width:0;
+  max-width:none;
+  min-height:0;
+  height:auto;
+  flex:0 0 auto;
+  align-self:stretch;
+  padding:13px;
+}
+#view-preview .virtual-mouse-heading{grid-area:heading;min-width:0}
+#view-preview .virtual-mouse-pad{
+  grid-area:pad;
+  width:100%;
+  min-width:0;
+  min-height:112px;
+  height:112px;
+  flex:none;
+}
+#view-preview .virtual-mouse-buttons{
+  grid-area:buttons;
+  width:100%;
+  grid-template-columns:1fr 1fr;
+}
+#view-preview .virtual-mouse-readout{grid-area:readout;min-width:0}
+#view-preview #virtualMousePanel>p{grid-area:note;min-width:0;line-height:1.5}
+@media(max-width:760px){
+  #view-preview #previewStage{
+    height:auto;
+    min-height:0;
+    max-height:none;
+    padding:10px;
+    gap:10px;
+  }
+  #view-preview #virtualMousePanel:not(.hidden){
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:
+      "heading heading"
+      "pad pad"
+      "buttons buttons"
+      "readout readout"
+      "note note";
+    gap:9px;
+    padding:11px;
+  }
+  #view-preview .virtual-mouse-pad{height:104px;min-height:104px}
+}
+@media(max-width:380px){
+  #view-preview #previewStage{padding:7px;gap:8px}
+  #view-preview #virtualMousePanel:not(.hidden){padding:9px}
+  #view-preview .virtual-mouse-pad{height:92px;min-height:92px}
+}
