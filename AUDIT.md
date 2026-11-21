@@ -83,6 +83,10 @@ No real browser automation or physical device testing was performed during this 
 
 Use [QA-RELEASE.md](QA-RELEASE.md) for the manual test matrix and release gates. At minimum, test 320, 360, 390, 768, 1024, and 1440 CSS-pixel widths, then repeat on real Android phone, tablet, laptop, and desktop browsers.
 
+## Interactive Product Tour
+
+A hands-on seven-step onboarding tour is implemented in this branch. First-time visitors are offered the tour automatically; visitors can decline, skip at any point, or restart it from Overview and Help & Feedback. Steps guide the user through loading a URL, selecting a device preview, applying a responsive preset, saving a session, viewing History, changing the Reduce motion preference, and reaching Help & Feedback. Progress flags are stored locally under a separate tour key. The tour is not yet runtime-verified; check keyboard interaction, spotlight layering, mobile positioning, event progression, and persistence using the checklist in `QA-RELEASE.md`.
+
 ## Release decision
 
 **Status: source stabilization in progress; not production-certified.**
