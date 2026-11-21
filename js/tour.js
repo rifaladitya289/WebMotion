@@ -125,6 +125,7 @@ function renderStep(step) {
     target.scrollIntoView({ block: "center", behavior: document.body.classList.contains("reduce-motion") ? "auto" : "smooth" });
     const focusTarget = target.matches("button, input, select, textarea, [tabindex]") ? target : target.querySelector("button, input, select, textarea, [tabindex]");
     if (focusTarget && focusTarget.type !== "text") focusTarget.focus({ preventScroll: true });
+    else panel.querySelector(".tour-close")?.focus();
   } else {
     panel.querySelector("[data-tour-finish-step]")?.focus();
   }
