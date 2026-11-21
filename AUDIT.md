@@ -1,194 +1,90 @@
-# WebMotion — Source Audit
+# WebMotion — Functional & Release Audit
 
 **Audit date:** 21 November 2026  
+**Branch:** `qa/stabilization-2026-11`  
 **Repository:** `rifaladitya289/WebMotion`  
-**Scope:** Current `main` branch source and project documentation.
+**Audit type:** Source-level review and static consistency checks
 
-## Scope and verification
+## Executive status
 
-Reviewed the landing page, workspace markup, all CSS files, all JavaScript modules, and the README. The source-level structural checks covered:
+The source-level review and targeted fixes in this branch are complete for this pass. The project is **not yet release-certified** because an interactive browser session, physical-device matrix, and deployment verification could not be completed in this environment.
 
-- Unique HTML IDs.
-- JavaScript ID selectors resolving to existing HTML elements.
-- Relative JavaScript module imports.
-- Local CSS and JavaScript references in the HTML.
-- Consistency of the preview, history, results, settings, and navigation flows.
+Do not interpret static checks as proof that every button works at runtime or that the layout is correct on every device.
 
-The latest focused structural scan found **92 HTML IDs**, no duplicate IDs, all seven data-view destinations present, and no missing in-page anchor targets. This check does not replace a complete selector/import scan or browser runtime QA.
+## Functional inventory reviewed
 
-This is a source audit, not a complete browser QA certification. A live interactive browser session, device matrix, console inspection, and real external-site embedding tests were not available during this audit.
-
-## Fixes applied
-
-| Area | Finding | Change |
+| Area | Current implementation | Important boundary |
 |---|---|---|
-| URL entry | Native `type=url` validation rejected bare domains before the URL normalizer could add HTTPS. | URL fields now accept text with URL keyboard hints; the normalizer validates the final URL. |
-| URL safety | URLs containing embedded username/password credentials were accepted. | Credential-bearing URLs are now rejected. |
-| Desktop preview | A desktop viewport could exceed the phone's available width. | Preview is scaled to the available stage width and recalculated on resize and after navigation. |
-| Viewport sizing | The frame height did not account cleanly for its browser-style header and capped tall custom viewports. | The frame now includes the header plus the selected content height; the iframe flexes into the remaining area. |
-| New website session | Findings from a different website could remain attached to the next URL. | Starting a new URL load (including the same URL again) clears previous findings, notes, checklist selections, and animation message; intentional history restoration preserves its saved findings. |
-| History restore | Reopening a saved session restored the URL but not the saved findings. | Reopening restores saved results and checklist selections before loading the URL. |
-| History safety | A locally modified result count could be inserted into HTML without escaping. | The displayed result count is escaped; stored history and restored result records are validated. |
-| Checklist behavior | Rechecking a checklist item could create duplicate findings; unchecking did not remove its entry. | Checklist findings are updated rather than duplicated and are removed when unchecked. |
-| Animation controls | Playback speed/repeat controls were visible despite having no working timeline engine. | Inactive controls were removed and the UI now explains the inspection limitation. |
-| Feedback | The email action had no configured recipient, so it could open a blank-address draft. | Feedback is copied to the clipboard with a fallback for browsers without Clipboard API access. |
-| Local storage | The startup check only tested whether the `localStorage` property existed. | Startup now attempts a write/remove operation and reports blocked storage. Settings save failures are also reported. |
-| Navigation | Sidebar links had duplicate click handlers; Escape did not reset the mobile menu state. | Duplicate handler removed; menu state and ARIA attributes are synchronized. |
-| Keyboard shortcuts | Workspace shortcuts could update a hidden workspace without opening it. | Shortcuts now open the workspace and avoid intercepting keystrokes while typing in form fields. |
-| Fullscreen | The button label did not reflect whether fullscreen was active. | The label updates on the browser's fullscreen-change event. |
-| Legal links | Footer policy links only showed short toast messages. | They now open readable privacy and usage-summary dialogs. |
-| Small screens | Workspace topbar could become crowded on very narrow phones. | Narrow-screen spacing and breadcrumb rules were added. |
-| Device preset events | The preview stage itself also carried `data-device`, so the broad event selector could treat a stage click as a preset selection. | Preset listeners now target only `.device-button[data-device]`. |
-| Desktop frame dimensions | The desktop bezel used 8 px borders while the scale calculation reserved 7 px per side, shrinking the iframe viewport by 2 px. | Desktop bezel now uses the same 7 px border assumption as the sizing calculation. |
-| Tablet toolbar | The URL field and four device controls could compete for horizontal space at tablet widths. | The toolbar wraps and places the viewport controls on a separate row below 950 px. |
-| Responsive stylesheet | The first tablet-toolbar patch exposed an extra closing brace in the responsive media query. | The media query grouping was corrected; all four CSS files now have balanced braces. |
-| Accessibility | Keyboard focus was not clearly visible on controls. | A visible focus outline was added for keyboard navigation. |
-| Export | Export omitted unsaved current-session findings and revoked the download URL immediately. | Current work is included and the object URL is revoked after a short delay. |
+| Landing and navigation | Landing anchors, Start Testing, workspace navigation, mobile drawers, legal dialogs, fullscreen, keyboard shortcuts | Requires runtime click and keyboard verification |
+| URL entry and preview | URL normalization, HTTPS default, credential rejection, preview loading status, timeout hint, external-tab action | A target may block iframe embedding |
+| Device sizing | Desktop, Laptop, Tablet, Mobile, custom width/height, rotate, responsive QA shortcuts | CSS viewport simulation is not physical-device certification |
+| Virtual Mouse | Desktop/Laptop visual pointer, drag/hover movement, keyboard movement, coordinate readout, left/right feedback | Does not send trusted clicks, right-clicks, or scroll input into arbitrary third-party frames |
+| Testing Tools | Responsive presets, animation timer, manual animation/interaction/transition checklists, notes | These are manual observations, not automated website tests |
+| Results | Counts, warning/manual records, print dialog, session save | PDF is produced through the browser print dialog |
+| History | Local save, reopen, delete, clear, and recent sessions | Stored on the current browser/device only |
+| Settings | Clear-history confirmation, reduce-motion preference, JSON export | No cloud sync |
+| Help and feedback | Browser limitation explanations, clipboard feedback, privacy and terms summaries | Clipboard behavior depends on browser permission/support |
+| Studio attribution | Gallagher’s Studio credit in workspace sidebar and footer | Attribution is a product label, not an account or backend integration |
 
-## Remaining limitations — not source bugs
+## Fixes applied in this stabilization branch
 
-1. **External website embedding:** Some sites intentionally block iframe embedding with CSP or X-Frame-Options. WebMotion does not bypass those protections.
-2. **Animation inspection:** Automatic animation timeline inspection is not implemented in this sandboxed build. Users can record manual observations.
-3. **Interaction and transition checks:** These are manual checklists, not automated browser tests. A warning/manual record is not a verified pass.
-4. **Responsive review:** The viewport controls change the iframe's CSS viewport dimensions. They do not certify layout quality on every physical device or browser.
-5. **Cloud services:** Authentication, cloud sync, and server-side reports are not connected. History and settings remain local to the current browser/device.
-6. **PDF export:** The report uses the browser's print dialog; the user chooses “Save as PDF” where supported.
+1. External website actions now create a temporary link with `target="_blank"` and `rel="noopener noreferrer"`, rather than using a `window.open(..., "noopener")` return value as proof that a new tab opened.
+2. Both Preview and Interaction review now show honest guidance that browser pop-up settings may prevent the new tab from appearing.
+3. The Settings “Reduce motion” option now applies reduced animation, transition, and smooth-scroll behavior across the interface.
+4. History clearing continues to require confirmation unless the saved setting is explicitly `false`; incomplete settings data no longer silently disables confirmation.
+5. Invalid stored dates display as “Unknown date” instead of producing an invalid timestamp in reports/history.
+6. Landing and workspace menu buttons now declare their controlled navigation regions and initial expanded state.
+7. README project structure and documented limitations were refreshed to match the current repository.
 
-## Recommended next QA pass
+## Static checks performed
 
-- Test the landing page and workspace at 320 px, 360 px, 390 px, 768 px, 1024 px, and 1440 px.
-- Test entering both `example.com` and a full HTTPS URL.
-- Test a site that allows iframe embedding and one that blocks it.
-- Switch Desktop → Tablet → Mobile → custom dimensions, rotate, and resize the browser.
-- Save a session, reload the page, reopen it, verify findings, then delete it.
-- Test history clear with confirmation both enabled and disabled.
-- Test local data export, clipboard feedback, print/PDF, fullscreen, keyboard shortcuts, and the privacy/terms dialogs.
-- Check the browser console for runtime errors during the above steps.
+The current branch was fetched again after the changes. Checks returned:
 
-## Audit conclusion
+- **92** HTML IDs; no duplicate IDs.
+- **69** distinct literal JavaScript ID selectors; no missing target IDs.
+- All checked relative JavaScript module imports resolve to tracked files.
+- All **11** linked local CSS files exist.
+- CSS brace balance is zero for all 11 linked stylesheets.
+- All seven workspace destinations exist: Overview, Preview, Testing, Results, History, Settings, and Help.
+- The iframe retains the sandbox tokens `allow-forms allow-scripts allow-popups`; it does not grant `allow-same-origin`.
+- The new-tab link protections, reduce-motion rule, invalid-date guard, and history-confirmation guard are present in source.
 
-The source-level issues listed above have been corrected in the repository. Structural checks pass. The remaining items are documented product/browser limitations or tests that require a real browser/device run; they are not being reported as passed without that evidence.
+These checks do not execute JavaScript or render CSS in a browser.
 
+## Virtual Mouse decision
 
-## Follow-up implementation — virtual pointer and guided QA
+**Decision for this release:** keep the Virtual Mouse explicitly labeled as a visual pointer simulator.
 
-| Area | Added behavior | Boundary |
-|---|---|---|
-| Virtual Mouse | Desktop/Laptop-only trackpad pad; pointer follows pad movement and touch/drag, arrow keys move it, left/right controls show click feedback, and coordinates are displayed. | The cursor is an overlay in the parent app. Synthetic clicks cannot be forwarded as trusted input into arbitrary cross-origin or sandboxed website frames. Use the actual page pointer or open the target in a new tab for real interaction. |
-| Preview diagnostics | Shows loading, iframe navigation completion, and a timeout hint with a new-tab fallback. | Browsers do not reliably expose CSP / X-Frame-Options denial details to the embedding page. A load event does not prove that the target rendered successfully. |
-| Animation review | Added a review timer, manual review checklist, and saved duration/checklist findings in Results. | This does not inspect CSS/Web Animations timelines in an external sandboxed page. |
-| Interaction review | Added a direct open-in-new-tab action and retained the manual interaction checklist and observation notes. | Cross-origin page controls cannot be automatically clicked, read, or verified by this build. |
-| Responsive QA | Added common viewport shortcuts (320, 360, 390, 768, 1024, 1440 px) and a dedicated responsive observation field. | The user must inspect the target layout at each selected viewport; these presets do not certify physical-device behavior. |
+The current project is a static GitHub Pages application. The iframe is sandboxed and external sites are normally cross-origin. Browser same-origin policy prevents the parent app from inspecting or controlling arbitrary external page DOM. Synthetic events are not equivalent to trusted physical input.
 
-The virtual pointer is deliberately a visual simulator, not a claim of remote control over the embedded website. The app keeps the iframe sandbox restrictions rather than weakening them to gain unsafe access to third-party page content.
+Do not add `allow-same-origin`, remove iframe sandboxing, or claim remote click/scroll support as a workaround. That would weaken isolation without making universal remote control reliable.
 
-## Remaining verification
+**Future architecture if true remote control is required:** build a separate remote-browser service with isolated browser sessions, authenticated session ownership, streamed viewport output, a validated input channel, session timeouts, resource limits, and server-side abuse protections. The static GitHub Pages frontend would become a client for that service. This backend is not implemented in this branch.
 
-The latest changes have been checked for HTML ID uniqueness, selector targets, local module references, and CSS brace balance. They have not been executed in a real browser or on physical devices in this environment. The responsive QA shortcuts are intended to support that next manual device pass.
+## Security and accessibility review
 
+- Keep the iframe sandbox and the current referrer policy.
+- External links opened by WebMotion use `noopener noreferrer` and `no-referrer`.
+- URL normalization allows HTTP/HTTPS only and rejects embedded URL credentials.
+- User-supplied result text is escaped before being inserted into report/history markup.
+- Local data stays in browser storage; users can export it from Settings.
+- Keyboard focus styles and navigation state are present in the interface.
+- The reduced-motion setting now affects the complete interface.
 
-## Full repository audit — 21 November 2026
+Still requiring runtime verification: keyboard-only navigation, screen-reader announcements, focus order, dialog focus handling, contrast on real displays, clipboard permission behavior, and browser-specific fullscreen behavior.
 
-This follow-up audit reviewed the complete tracked source tree: landing page, workspace navigation, preview and viewport controls, manual QA tools, results, history, settings/export, legal dialogs, and all four stylesheets.
+## Performance review
 
-### Source-level defects found and corrected
+Source review did not reveal a build pipeline or large client framework; the app uses static HTML, CSS, and vanilla JavaScript modules. This is not a measured performance result. Network timing, Core Web Vitals, memory use, CPU use, iframe-heavy pages, and low-end Android performance still require browser measurement.
 
-| Area | Defect | Correction |
-|---|---|---|
-| Workspace visibility | The late `.workspace-page{display:flex!important}` rule could override the global `.hidden` utility, leaving the workspace visible when returning to the landing page. | Added the more specific `.workspace-page.hidden{display:none!important}` rule after the layout override. |
-| Preview sizing | The height-based scale cap made the preview narrower than the available workspace even when horizontal room remained. | Scale now prioritizes the available stage width; tall previews can extend vertically and use normal page scrolling. |
-| Preview navigation | A delayed iframe load from an older URL could overwrite the status for a newer request. | The load handler now ignores a frame whose current URL does not match the active URL. |
-| Responsive results | Applying a responsive viewport dispatched a render event without adding the finding to `state.results`. | The viewport application now creates and stores a dated warning result before refreshing the report. |
-| History restoration | Saved animation checklist findings were restored in Results, but their checkboxes were not restored in the Animation panel. | History reopen now restores Animation, Interaction, and Transition checklist states. |
-| New-session reset | Starting a different URL left animation checklist selections checked from the previous site. | Loading a new session clears the animation, interaction, and transition checklist controls. |
-| Virtual pointer | Pointer visibility and cursor position were inconsistent after releasing a drag. | Pointer position now remains visible after a drag and is reset when a new URL is loaded. |
-| Virtual mouse feedback | The old click feedback could look like a successful website click even though the iframe sandbox prevents remote input. | Left/right controls now explicitly report that external-page clicks are blocked instead of claiming success. Remote scroll attempts likewise report the browser boundary. |
-| Interaction review | A popup-blocked tab could still produce a success toast. | The action now checks the result of `window.open` and reports when the browser blocks it. |
-| Privacy copy | The dialog suggested that history could be cleared from Settings, although clearing is available in History. | The wording now points to the correct page. |
+## Runtime and cross-device verification — outstanding
 
-### Current feature inventory and actual behavior
+No real browser automation or physical device testing was performed during this pass. The live GitHub Pages page could not be retrieved through the available web inspection route, so deployment rendering is also unverified.
 
-- **Landing page:** Home, Features, How It Works, About, Get Started, and footer policy dialogs.
-- **Workspace navigation:** Overview, Website Preview, Testing Tools, Results, History, Settings, and Help; desktop sidebar and mobile drawer.
-- **Preview:** URL normalization, HTTPS default, credential rejection, iframe load status, timeout hint, external-tab fallback, viewport presets, custom dimensions, and orientation toggle.
-- **Virtual pointer:** Desktop/Laptop-only visual pointer, drag tracking, keyboard arrow movement, coordinates, and visual click feedback. It is not a hardware mouse and cannot deliver trusted input into an isolated external iframe.
-- **Responsive QA:** Common viewport shortcuts and manually recorded observations. Applying a viewport records a warning; it does not claim the target passed.
-- **Animation QA:** Manual timer, checklist, and notes. It does not inspect external animation timelines.
-- **Interaction / Transition QA:** Manual checklists and notes. They do not automate or verify third-party page controls.
-- **Results:** Counts, manual/warning findings, print dialog for PDF, and session save.
-- **History:** Local save, reopen, delete, clear, and restore of recorded checklist state.
-- **Settings:** Clear-history confirmation preference, reduced-motion preference, JSON export, and clipboard feedback.
-- **Help / legal:** Browser limitations, privacy summary, and usage terms.
+Use [QA-RELEASE.md](QA-RELEASE.md) for the manual test matrix and release gates. At minimum, test 320, 360, 390, 768, 1024, and 1440 CSS-pixel widths, then repeat on real Android phone, tablet, laptop, and desktop browsers.
 
-### Verification performed after corrections
+## Release decision
 
-- 91 HTML IDs checked; no duplicate IDs found.
-- 69 distinct literal JavaScript ID selectors checked; no missing target IDs found.
-- All relative JavaScript module imports resolve to tracked JavaScript files.
-- CSS brace counts are balanced in all four stylesheets.
-- Workspace hidden-state override and responsive result persistence were checked in source.
-- Repository tree and latest source blobs were re-fetched after changes.
+**Status: source stabilization in progress; not production-certified.**
 
-### Explicitly unverified / architectural limits
-
-1. No real browser session or physical desktop/tablet/phone rendering was available for this audit. Visual layout, touch latency, iframe behavior, console errors, and deployment timing still need runtime verification.
-2. CSP and X-Frame-Options may block a target from appearing at all.
-3. The iframe deliberately retains its sandbox. Same-origin policy and sandbox isolation prevent WebMotion from reliably reading or controlling third-party page DOM, dispatching real clicks/right-clicks, or scrolling its internal document from the separate mouse pad. A synthetic DOM event is not equivalent to trusted hardware input.
-4. A true remote mouse/scroll experience across arbitrary websites requires a controlled browser session or a different architecture with a server-side browser/remote-control layer. It cannot be made universal by changing static GitHub Pages JavaScript without weakening security.
-5. Responsive viewport presets simulate CSS viewport dimensions; they do not reproduce every device's hardware, browser chrome, GPU, or operating-system behavior.
-
-This audit corrects identifiable source-level defects found in the repository. It does not certify the application as bug-free across every browser, target website, or physical device.
-
-
-## UI/UX Information Architecture Refresh — 21 November 2026
-
-### Changes applied
-- Reorganized the workspace sidebar into three clear groups: Get Started, Your Workspace, and Your Data.
-- Renamed the primary landing workspace destination from Overview to Dashboard and aligned the breadcrumb label.
-- Reframed the first dashboard card as Step 01, clearly explaining that users should enter a public website URL to begin.
-- Added a three-step workflow guide that leads users through Website Preview, Testing Tools, and Results.
-- Removed the duplicate Quick access panel because it repeated the same destinations already present in the workflow guide and sidebar.
-- Added clearer spacing, typography, surfaces, button hierarchy, and responsive layout rules in `css/polish.css`.
-- Added `aria-current="page"` to the active workspace navigation item for improved navigation semantics.
-
-### Static verification
-- No duplicate HTML IDs found.
-- No missing targets among the checked literal JavaScript ID selectors.
-- The polish stylesheet is linked from `index.html`.
-- CSS brace balance is zero with no negative nesting.
-- These are source-level checks only. No browser/device visual or interaction test was performed.
-
-### Remaining UX work
-- Review and redesign the Website Preview control hierarchy.
-- Simplify Testing Tools so the active test and its instructions are immediately clear.
-- Improve Results empty states, report hierarchy, and next-step guidance.
-- Perform actual visual and interaction testing across desktop, laptop, tablet, and mobile browsers before calling the redesign complete.
-
-
-## Final Responsive Polish & Navigation Simplification — 21 November 2026
-
-### Landing-page entry point
-- Removed the repeated Get Started CTA from the navbar and lower About section.
-- Kept one primary landing-page action: **Start Testing** in the hero.
-- Renamed the Dashboard URL form action to **Load Website**, distinguishing loading a URL from entering the workspace.
-- Renamed the sidebar group from **Get Started** to **Overview**; Dashboard remains its only item.
-- Corrected the three workflow labels to 01 Preview, 02 Testing, and 03 Results. The URL field is presented separately as the starting action.
-
-### Responsive polish
-- Added narrow-screen guardrails for the preview stage, device preview column, iframe frame, URL controls, and custom viewport fields.
-- Preserved the existing desktop/laptop-only virtual mouse visibility logic in JavaScript; the iframe remains sandboxed.
-- Kept the original device preset, preview, testing, results, history, settings, and help view IDs intact.
-
-### Latest static verification
-- 92 HTML IDs; no duplicate IDs.
-- All seven data-view destinations map to existing workspace sections.
-- No missing in-page anchor targets.
-- Exactly one Start Testing CTA remains on the landing page; the Dashboard URL form uses Load Website.
-- The landing page has no duplicate Get Started CTA.
-- All ten local CSS files are linked in index.html.
-- Responsive stylesheet guardrail rules were appended; this is a source-level change, not a physical-device rendering test.
-
-### Known limitations / outstanding QA
-- No live browser automation or physical device matrix was available for this pass. Visual rendering, pointer latency, iframe interaction, touch behavior, and console output remain unverified.
-- The virtual mouse is a visual pointer, not a trusted hardware-input bridge. Cross-origin iframe click/right-click/scroll control remains blocked by browser security. A real remote-browser service is a separate architectural phase.
-- This source audit does not certify the project as bug-free or ready for production.
+The next release gate is the manual browser/device test matrix in `QA-RELEASE.md`. Record each result as Pass, Fail, or Not Tested. Fix failures and repeat the affected regression checks before merging this branch into `main`.
