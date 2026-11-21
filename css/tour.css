@@ -1,0 +1,33 @@
+/* WebMotion Interactive Product Tour */
+.tour-layer{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:18px}
+.tour-scrim{position:absolute;inset:0;background:rgba(5,3,11,.76);backdrop-filter:blur(3px)}
+.tour-panel{position:relative;z-index:2;width:min(420px,100%);max-height:min(82vh,720px);overflow:auto;padding:25px;border:1px solid rgba(190,160,255,.28);border-radius:16px;background:linear-gradient(145deg,#211832,#120e1d);box-shadow:0 24px 90px rgba(0,0,0,.55);color:#f5f0fc}
+.tour-kicker{display:block;color:#c5a5ff;font-size:9px;font-weight:700;letter-spacing:1.7px}
+.tour-panel h2{margin:11px 0 8px;font:600 23px/1.2 var(--font-heading,Inter,sans-serif);letter-spacing:-.7px}
+.tour-panel>p{margin:0;color:#b8aec8;font-size:12px;line-height:1.75}
+.tour-panel-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tour-close{width:30px;height:30px;border:1px solid rgba(205,184,255,.18);border-radius:8px;background:rgba(255,255,255,.04);color:#fff;font-size:20px;cursor:pointer}
+.tour-progress-meta{display:flex;justify-content:space-between;margin-top:19px;color:#a99bbd;font-size:9px;font-weight:700;letter-spacing:1px}
+.tour-progress{height:4px;margin-top:8px;overflow:hidden;border-radius:8px;background:rgba(255,255,255,.09)}
+.tour-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8056df,#c5a5ff);transition:width .25s ease}
+.tour-instruction{margin-top:18px;padding:14px;border:1px solid rgba(190,160,255,.16);border-radius:10px;background:rgba(154,120,245,.07)}
+.tour-instruction strong{color:#d9c8ff;font-size:10px;letter-spacing:.5px}
+.tour-instruction p{margin:5px 0 0;color:#e5deef;font-size:11px;line-height:1.7}
+.tour-panel-actions,.tour-offer-actions{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:18px}
+.tour-button{min-height:38px;padding:9px 13px;border:1px solid rgba(205,184,255,.2);border-radius:8px;background:rgba(255,255,255,.035);color:#e9e1f5;font:600 11px Inter,sans-serif;cursor:pointer}
+.tour-button:disabled{opacity:.35;cursor:not-allowed}
+.tour-button-primary{border-color:transparent;background:linear-gradient(135deg,#9872f2,#8056df);color:#fff}
+.tour-button-quiet{background:transparent}
+.tour-footnote{margin-top:14px!important;color:#82778f!important;font-size:9px!important;line-height:1.6!important}
+.tour-spotlight{position:relative!important;z-index:10001!important;outline:2px solid #c5a5ff!important;outline-offset:4px!important;box-shadow:0 0 0 9999px rgba(5,3,11,.74)!important;border-radius:9px!important}
+.tour-panel :focus-visible{outline:2px solid #c5a5ff;outline-offset:3px}
+@media(max-width:600px){
+ .tour-layer{align-items:end;padding:10px}
+ .tour-panel{width:100%;max-height:76vh;padding:20px;border-radius:14px}
+ .tour-panel h2{font-size:21px}
+ .tour-offer-actions{align-items:stretch;flex-direction:column}
+ .tour-offer-actions .tour-button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .tour-progress span{transition:none}
+}
