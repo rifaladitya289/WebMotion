@@ -22,7 +22,7 @@ const steps = [
     view: "testing",
     target: '#tool-responsive [data-preset="mobile"]',
     title: "Try a responsive preset",
-    description: "Testing Tools gives you quick viewport presets and manual review tools for responsive layouts, animation, interaction, and transitions.",
+    description: "Review Tools gives you viewport presets and manual review tools for responsive layouts, animation, interaction, and transitions.",
     instruction: "Choose the Mobile preset. WebMotion applies the viewport but does not claim that the target website passed a responsive test.",
     selector: '#tool-responsive [data-preset="mobile"]'
   },
