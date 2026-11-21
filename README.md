@@ -45,7 +45,11 @@ WebMotion/
 ├── index.html
 ├── README.md
 ├── AUDIT.md
+├── PRODUCT-IDENTITY-AUDIT.md
+├── PRODUCT-IDENTITY-GUIDELINES.md
+├── QA-RELEASE.md
 ├── css/
+│   ├── tokens.css
 │   ├── style.css
 │   ├── landing.css
 │   ├── workspace.css
@@ -56,7 +60,8 @@ WebMotion/
 │   ├── results-redesign.css
 │   ├── history-redesign.css
 │   ├── settings-help-redesign.css
-│   ├── studio-attribution.css\n│   └── tour.css
+│   ├── studio-attribution.css
+│   └── tour.css
 └── js/
     ├── app.js
     ├── state.js
@@ -65,7 +70,8 @@ WebMotion/
     ├── testing.js
     ├── results.js
     ├── history.js
-    └── settings.js
+    ├── settings.js
+    └── tour.js
 ```
 
 ## Project identity
