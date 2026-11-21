@@ -47,3 +47,9 @@
  #view-results .result-summary>div,#view-results .result-item{background:#fff!important;border:1px solid #ddd!important;break-inside:avoid}
  #view-results .status-pill{color:#333!important;background:#fff!important;border-color:#aaa!important}
 }
+
+/* Provenance labels: reports distinguish user observations from browser limits. */
+#view-results .status-pill.manual_observation{color:#c9b3f2;background:rgba(149,101,255,.08);border-color:rgba(171,135,255,.22)}
+#view-results .status-pill.capability_limit{color:var(--warning);background:rgba(242,200,121,.07);border-color:rgba(242,200,121,.2)}
+#view-results .status-pill.verified_check{color:var(--success);background:rgba(116,214,166,.07);border-color:rgba(116,214,166,.2)}
+#view-results .status-pill.legacy_unverified{color:var(--muted);background:rgba(170,161,186,.06);border-color:var(--border)}
