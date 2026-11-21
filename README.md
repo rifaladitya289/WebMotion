@@ -11,7 +11,7 @@ WebMotion is a focused website viewport preview and manual QA documentation work
 - Desktop, laptop, tablet, mobile, and custom viewport presets.
 - Desktop/laptop visual pointer simulator.
 - Manual responsive, animation, interaction, and transition review.
-- Results report, local session save/restore, history management, and print-to-PDF.
+- Provenance-aware report, local session save/restore, history management, and print-to-PDF.
 - Settings, reduced-motion preference, local JSON export, clipboard feedback, and help/legal summaries.
 - Seven-step hands-on Interactive Product Tour, offered on first visit and restartable from Overview or Help & Feedback.
 - Responsive sidebar navigation and Gallagher’s Studio project attribution.
