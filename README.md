@@ -13,6 +13,7 @@ WebMotion is a static website preview and manual QA workspace built with HTML, C
 - Manual responsive, animation, interaction, and transition review.
 - Results report, local session save/restore, history management, and print-to-PDF.
 - Settings, reduced-motion preference, local JSON export, clipboard feedback, and help/legal summaries.
+- Seven-step hands-on Interactive Product Tour, offered on first visit and restartable from Overview or Help & Feedback.
 - Responsive sidebar navigation and Gallagher’s Studio project attribution.
 
 ## Important limitations
