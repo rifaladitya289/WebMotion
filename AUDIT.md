@@ -14,7 +14,7 @@ Reviewed the landing page, workspace markup, all CSS files, all JavaScript modul
 - Local CSS and JavaScript references in the HTML.
 - Consistency of the preview, history, results, settings, and navigation flows.
 
-The structural scan found **77 unique HTML IDs**, no duplicate IDs, no missing selector targets, no broken module imports, and no missing local CSS/JS references.
+The latest focused structural scan found **92 HTML IDs**, no duplicate IDs, all seven data-view destinations present, and no missing in-page anchor targets. This check does not replace a complete selector/import scan or browser runtime QA.
 
 This is a source audit, not a complete browser QA certification. A live interactive browser session, device matrix, console inspection, and real external-site embedding tests were not available during this audit.
 
@@ -163,3 +163,32 @@ This audit corrects identifiable source-level defects found in the repository. I
 - Simplify Testing Tools so the active test and its instructions are immediately clear.
 - Improve Results empty states, report hierarchy, and next-step guidance.
 - Perform actual visual and interaction testing across desktop, laptop, tablet, and mobile browsers before calling the redesign complete.
+
+
+## Final Responsive Polish & Navigation Simplification — 21 November 2026
+
+### Landing-page entry point
+- Removed the repeated Get Started CTA from the navbar and lower About section.
+- Kept one primary landing-page action: **Start Testing** in the hero.
+- Renamed the Dashboard URL form action to **Load Website**, distinguishing loading a URL from entering the workspace.
+- Renamed the sidebar group from **Get Started** to **Overview**; Dashboard remains its only item.
+- Corrected the three workflow labels to 01 Preview, 02 Testing, and 03 Results. The URL field is presented separately as the starting action.
+
+### Responsive polish
+- Added narrow-screen guardrails for the preview stage, device preview column, iframe frame, URL controls, and custom viewport fields.
+- Preserved the existing desktop/laptop-only virtual mouse visibility logic in JavaScript; the iframe remains sandboxed.
+- Kept the original device preset, preview, testing, results, history, settings, and help view IDs intact.
+
+### Latest static verification
+- 92 HTML IDs; no duplicate IDs.
+- All seven data-view destinations map to existing workspace sections.
+- No missing in-page anchor targets.
+- Exactly one Start Testing CTA remains on the landing page; the Dashboard URL form uses Load Website.
+- The landing page has no duplicate Get Started CTA.
+- All ten local CSS files are linked in index.html.
+- Responsive stylesheet guardrail rules were appended; this is a source-level change, not a physical-device rendering test.
+
+### Known limitations / outstanding QA
+- No live browser automation or physical device matrix was available for this pass. Visual rendering, pointer latency, iframe interaction, touch behavior, and console output remain unverified.
+- The virtual mouse is a visual pointer, not a trusted hardware-input bridge. Cross-origin iframe click/right-click/scroll control remains blocked by browser security. A real remote-browser service is a separate architectural phase.
+- This source audit does not certify the project as bug-free or ready for production.
