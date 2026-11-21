@@ -314,3 +314,16 @@ No new feature should be added until:
 4. The audit report and README accurately describe the shipped build.
 
 **Current decision:** Keep this branch and the existing PR in draft. Do not merge to `main` yet.
+
+
+## Remediation progress — 21 November 2026
+
+The following source-level changes were applied after the initial audit:
+- Results no longer display a hard-coded “Not automated” count or a misleading Passed metric. The summary now distinguishes recorded items, manual observations, browser limitations, and provenance-backed verified checks.
+- Legacy locally saved items without provenance are never upgraded to verified status; legacy “passed” items are labeled as unverified.
+- Applying a viewport no longer creates a QA finding. It is a workspace action, not evidence that the target website passed a test.
+- Landing-page and workspace copy now describe viewport preview and manual review rather than implying automated website testing.
+- A canonical `css/tokens.css` file now owns the shared color, type, spacing, radius, motion, and focus tokens. Duplicate root token declarations were removed from the base and polish stylesheets.
+- Footer/sidebar attribution and legal-information labels were clarified.
+
+These changes have not yet received interactive browser or physical-device QA. See [PRODUCT-IDENTITY-GUIDELINES.md](PRODUCT-IDENTITY-GUIDELINES.md) for the product standards and [QA-RELEASE.md](QA-RELEASE.md) for the remaining validation gate.
