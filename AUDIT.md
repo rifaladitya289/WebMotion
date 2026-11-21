@@ -138,3 +138,28 @@ This follow-up audit reviewed the complete tracked source tree: landing page, wo
 5. Responsive viewport presets simulate CSS viewport dimensions; they do not reproduce every device's hardware, browser chrome, GPU, or operating-system behavior.
 
 This audit corrects identifiable source-level defects found in the repository. It does not certify the application as bug-free across every browser, target website, or physical device.
+
+
+## UI/UX Information Architecture Refresh — 21 November 2026
+
+### Changes applied
+- Reorganized the workspace sidebar into three clear groups: Get Started, Your Workspace, and Your Data.
+- Renamed the primary landing workspace destination from Overview to Dashboard and aligned the breadcrumb label.
+- Reframed the first dashboard card as Step 01, clearly explaining that users should enter a public website URL to begin.
+- Added a three-step workflow guide that leads users through Website Preview, Testing Tools, and Results.
+- Removed the duplicate Quick access panel because it repeated the same destinations already present in the workflow guide and sidebar.
+- Added clearer spacing, typography, surfaces, button hierarchy, and responsive layout rules in `css/polish.css`.
+- Added `aria-current="page"` to the active workspace navigation item for improved navigation semantics.
+
+### Static verification
+- No duplicate HTML IDs found.
+- No missing targets among the checked literal JavaScript ID selectors.
+- The polish stylesheet is linked from `index.html`.
+- CSS brace balance is zero with no negative nesting.
+- These are source-level checks only. No browser/device visual or interaction test was performed.
+
+### Remaining UX work
+- Review and redesign the Website Preview control hierarchy.
+- Simplify Testing Tools so the active test and its instructions are immediately clear.
+- Improve Results empty states, report hierarchy, and next-step guidance.
+- Perform actual visual and interaction testing across desktop, laptop, tablet, and mobile browsers before calling the redesign complete.
