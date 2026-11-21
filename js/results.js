@@ -7,7 +7,7 @@ function escapeHTML(value) {
 function itemKind(item) {
   if (item.title === "Responsive viewport applied") return "legacy_unverified";
   if (["manual_observation", "capability_limit", "verified_check"].includes(item.kind)) {
-    if (item.kind === "verified_check" && item.source !== "webmotion_automated") return "legacy_unverified";
+    if (item.kind === "verified_check" && (item.source !== "webmotion_automated" || item.status !== "passed")) return "legacy_unverified";
     return item.kind;
   }
   // Older locally saved entries have no provenance. Never reinterpret them as verified.
