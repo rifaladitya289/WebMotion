@@ -20,10 +20,10 @@ export function initNavigation() {
   document.querySelectorAll("[data-legal]").forEach(link => link.addEventListener("click", event => {
     event.preventDefault();
     const privacy = link.dataset.legal === "privacy";
-    legalTitle.textContent = privacy ? "Privacy Policy" : "Terms of Service";
+    legalTitle.textContent = privacy ? "Privacy Summary" : "Use Guidelines";
     legalBody.textContent = privacy
       ? "WebMotion currently stores saved sessions and preferences in this browser using local storage. There is no WebMotion account, cloud sync, or server-side history in this build. When you load a website, your browser requests that website directly. Export local data from Settings or clear saved sessions from History."
-      : "Use WebMotion only with websites you are allowed to access and review. Some websites block embedded previews; WebMotion does not bypass those protections. Results may include manual observations and should not be treated as a formal security or accessibility certification.";
+      : "Use WebMotion only with websites you are allowed to access and review. Some websites block embedded previews; WebMotion does not bypass those protections. The current build records manual observations and browser limitations; it does not provide formal security, accessibility, or automated QA certification.";
     if (legalDialog?.showModal) legalDialog.showModal(); else toast(legalBody.textContent);
   }));
   document.querySelector("#closeLegalDialog")?.addEventListener("click", () => legalDialog?.close());
