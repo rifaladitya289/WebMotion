@@ -1,0 +1,8 @@
+/* Gallagher's Studio project attribution */
+.footer-brand-block{display:flex;flex-direction:column;align-items:flex-start}
+.studio-credit{display:flex;align-items:center;gap:8px;margin-top:12px;padding:7px 10px;border:1px solid rgba(174,135,255,.2);border-radius:7px;background:rgba(145,103,220,.08)}
+.studio-credit span,.studio-sidebar-credit span{font-size:8px;letter-spacing:1.25px;color:#9385A8;font-weight:700}
+.studio-credit strong{font-size:10px;letter-spacing:.25px;color:#D6C3F5;font-weight:650}
+.studio-sidebar-credit{display:grid;gap:5px;margin:12px 0 13px;padding:11px 12px;border-left:2px solid #9D70E8;background:linear-gradient(90deg,rgba(145,103,220,.11),transparent)}
+.studio-sidebar-credit strong{font-size:11px;letter-spacing:.25px;color:#D8C5F4;font-weight:650}
+@media(max-width:700px){.studio-credit{margin-top:10px}.studio-sidebar-credit{margin-top:10px}}
