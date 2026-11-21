@@ -157,3 +157,13 @@
   #view-preview .custom-viewport{min-width:0;max-width:100%}
   #view-preview .preview-url-form input{min-width:0}
 }
+
+/* Settings: make the Reduce motion preference affect the full interface. */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
