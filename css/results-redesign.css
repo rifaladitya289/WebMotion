@@ -1,0 +1,49 @@
+/* Results report — calm hierarchy, readable metrics, and print-friendly output */
+#view-results{--report-line:rgba(190,160,255,.13)}
+#view-results .page-heading{align-items:center;margin-bottom:26px}
+#view-results .page-heading h1{font-size:clamp(28px,3vw,36px);letter-spacing:-1.4px}
+#view-results .page-heading p{max-width:440px;line-height:1.7}
+#view-results .heading-actions{flex-wrap:wrap;align-items:center}
+#view-results .result-summary{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}
+#view-results .result-summary>div{position:relative;min-height:112px;padding:18px 19px 16px;background:linear-gradient(145deg,rgba(38,29,57,.92),rgba(24,19,37,.96));border:1px solid var(--report-line);border-radius:10px;overflow:hidden}
+#view-results .result-summary>div:after{content:"";position:absolute;right:-24px;top:-32px;width:90px;height:90px;border:1px solid rgba(185,154,255,.08);border-radius:50%;box-shadow:0 0 0 13px rgba(185,154,255,.025),0 0 0 27px rgba(185,154,255,.018)}
+#view-results .result-number{font:600 30px/1 var(--font-heading);letter-spacing:-1px;color:#F7F2FF;margin:4px 0 11px;font-variant-numeric:tabular-nums}
+#view-results .result-summary small{display:block;color:#A99FBA;font-size:10px;letter-spacing:.2px}
+#view-results .result-list{gap:10px}
+#view-results .result-item{align-items:center;padding:17px 19px;background:rgba(27,21,42,.78);border:1px solid var(--report-line);border-radius:9px;transition:border-color .18s ease,transform .18s ease}
+#view-results .result-item:hover{border-color:rgba(173,133,255,.38);transform:translateY(-1px)}
+#view-results .result-item>div{min-width:0}
+#view-results .result-item strong{display:block;color:#F1ECF8;font-size:12px;line-height:1.5}
+#view-results .result-item p{font-size:10px;line-height:1.65;margin:4px 0 0;overflow-wrap:anywhere}
+#view-results .result-item p:last-child{color:#756B85;font-size:9px;margin-top:7px}
+#view-results .status-pill{padding:5px 9px;border-radius:5px;font-size:9px;font-weight:600;letter-spacing:.15px;background:rgba(242,200,121,.07);border-color:rgba(242,200,121,.2)}
+#view-results .status-pill.passed{background:rgba(116,214,166,.07);border-color:rgba(116,214,166,.2);color:#8BE0B4}
+#view-results .report-disclaimer{margin:16px 0 0;padding:13px 15px;border:1px solid var(--report-line);border-radius:8px;background:rgba(20,16,31,.55);line-height:1.7}
+#view-results #resultList>.empty-state{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 18px;border:1px dashed rgba(190,160,255,.2);border-radius:10px;background:rgba(24,19,37,.48);text-align:center}
+#view-results #resultList>.empty-state>span{width:42px;height:42px;display:grid;place-items:center;margin-bottom:10px;border-radius:12px;background:rgba(149,101,255,.12);color:#C7A8FF;font-size:21px}
+#view-results #resultList>.empty-state strong{font:600 15px var(--font-heading);color:#F4EFFB}
+#view-results #resultList>.empty-state p{max-width:300px;margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.7}
+@media(max-width:900px){#view-results .result-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){
+ #view-results .page-heading{align-items:flex-start;flex-direction:column;gap:14px}
+ #view-results .heading-actions{width:100%}
+ #view-results .heading-actions .button{flex:1}
+ #view-results .result-summary{gap:8px;margin-bottom:12px}
+ #view-results .result-summary>div{min-height:94px;padding:14px}
+ #view-results .result-number{font-size:26px;margin-bottom:9px}
+ #view-results .result-item{align-items:flex-start;flex-direction:column;gap:10px;padding:14px}
+ #view-results .status-pill{align-self:flex-start}
+ #view-results .report-disclaimer{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){#view-results .result-item{transition:none}#view-results .result-item:hover{transform:none}}
+@media print{
+ body{background:#fff!important;color:#17131f!important}
+ .sidebar,.workspace-topbar,.heading-actions,.site-footer,.report-disclaimer{display:none!important}
+ .workspace-page,.workspace-main{display:block!important;width:100%!important;min-height:0!important}
+ .workspace-content{max-width:none!important;padding:0!important}
+ #view-results{display:block!important}
+ #view-results .page-heading h1,#view-results .result-number,#view-results .result-item strong{color:#17131f!important}
+ #view-results .page-heading p,#view-results .result-item p,#view-results .result-summary small{color:#514b5b!important}
+ #view-results .result-summary>div,#view-results .result-item{background:#fff!important;border:1px solid #ddd!important;break-inside:avoid}
+ #view-results .status-pill{color:#333!important;background:#fff!important;border-color:#aaa!important}
+}
