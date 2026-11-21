@@ -1,8 +1,8 @@
 # WebMotion
 
-**Preview. Test. Perfect.**
+**Preview. Compare. Record.**
 
-WebMotion is a static website preview and manual QA workspace built with HTML, CSS, and vanilla JavaScript. It is designed for GitHub Pages and does not require an account.
+WebMotion is a focused website viewport preview and manual QA documentation workspace built with HTML, CSS, and vanilla JavaScript. It is designed for GitHub Pages and does not require an account.
 
 ## Current capabilities
 
