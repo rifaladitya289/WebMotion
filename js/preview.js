@@ -230,7 +230,7 @@ export function initPreview() {
     showView("preview");
     toast("Viewport set to " + width + " × " + height + ". Review the page visually, then record findings.");
   }));
-  document.querySelector("#runResponsive").addEventListener("click", () => { setDimensions(document.querySelector("#testWidth").value, document.querySelector("#testHeight").value); showView("preview"); requestAnimationFrame(updatePreviewScale); toast("Viewport applied. Full responsive quality still needs review."); const result = { id: crypto.randomUUID?.() || String(Date.now()), title:"Responsive viewport applied", status:"warning", detail: state.width + " × " + state.height + " preview viewport applied. This confirms the frame size only, not the target site's responsive quality.", date:new Date().toISOString() }; state.results.unshift(result); document.dispatchEvent(new CustomEvent("webmotion:result-added", { detail: result })); });
+  document.querySelector("#runResponsive").addEventListener("click", () => { setDimensions(document.querySelector("#testWidth").value, document.querySelector("#testHeight").value); showView("preview"); requestAnimationFrame(updatePreviewScale); toast("Viewport applied. Review the target manually; no test result was generated."); });
   document.querySelectorAll("[data-preset]").forEach(button => button.addEventListener("click", () => { const [w,h] = presets[button.dataset.preset]; setDimensions(w,h); }));
   document.querySelector("#openExternalButton").addEventListener("click", () => { if (!state.currentUrl) return toast("Load a website first.", "error"); openExternalTab(state.currentUrl); });
   document.querySelector("#websiteFrame").addEventListener("load", event => {
