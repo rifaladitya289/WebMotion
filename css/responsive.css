@@ -141,3 +141,19 @@
       "note note";
   }
 }
+
+
+/* Final responsive guardrails — preserve device preview proportions */
+@media(max-width:700px){
+  .landing-nav .nav-cta{display:none}
+  #view-preview .preview-stage{min-width:0;max-width:100%;overflow:hidden}
+  #view-preview .device-preview-column{min-width:0}
+  #view-preview .iframe-scale-wrap{max-width:100%}
+  #view-preview .virtual-mouse-panel:not(.hidden){min-width:0}
+}
+@media(max-width:380px){
+  #view-preview .preview-toolbar,
+  #view-preview .viewport-controls,
+  #view-preview .custom-viewport{min-width:0;max-width:100%}
+  #view-preview .preview-url-form input{min-width:0}
+}
