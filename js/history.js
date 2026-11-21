@@ -24,7 +24,7 @@ export function initHistory() {
   });
   document.querySelector("#clearHistory").addEventListener("click", () => {
     const settings = readJSON(STORAGE_KEYS.settings,{confirmClear:true});
-    if (settings.confirmClear && !confirm("Clear all saved WebMotion sessions on this device?")) return;
+    if (settings.confirmClear !== false && !confirm("Clear all saved WebMotion sessions on this device?")) return;
     const previous = state.history; state.history = []; if (!writeJSON(STORAGE_KEYS.history,state.history)) { state.history = previous; return toast("Could not clear history because local storage is unavailable.", "error"); } renderHistory(); toast("History cleared.");
   });
 }
