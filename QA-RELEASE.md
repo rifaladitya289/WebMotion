@@ -91,7 +91,25 @@ Also test actual phone portrait/landscape, tablet, laptop, and desktop displays.
 - [ ] Measure load performance on a normal connection and a slower mobile connection.
 - [ ] Check responsiveness and interaction on a lower-powered Android device.
 
-## 8. Release gates
+## 8. Interactive Product Tour
+
+- [ ] First-time visit shows a welcome offer only once.
+- [ ] Start interactive tour opens Step 1 and highlights the URL form.
+- [ ] Loading a valid URL advances to device preview, including when the target site blocks iframe embedding.
+- [ ] Selecting Mobile advances to the responsive preset task.
+- [ ] Selecting the Mobile preset advances to Results.
+- [ ] Saving a session advances only after local storage succeeds.
+- [ ] History displays the newly saved session.
+- [ ] Visiting History advances to Settings.
+- [ ] Changing Reduce motion advances to Help and persists the preference.
+- [ ] Finish tour completes and stores progress.
+- [ ] Maybe later, Skip tour, the close button, and Escape dismiss the tour safely.
+- [ ] Overview and Help & Feedback launch buttons can restart the tour after completion or dismissal.
+- [ ] Back navigation works and does not create duplicate overlays.
+- [ ] Spotlight and tutorial panel remain usable at 320, 360, 390, 768, 1024, and 1440 px widths.
+- [ ] Keyboard and screen-reader navigation remain usable while the tour is active.
+
+## 9. Release gates
 
 Do not merge to `main` until:
 
