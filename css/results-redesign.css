@@ -38,12 +38,18 @@
 @media(prefers-reduced-motion:reduce){#view-results .result-item{transition:none}#view-results .result-item:hover{transform:none}}
 @media print{
  body{background:#fff!important;color:#17131f!important}
- .sidebar,.workspace-topbar,.heading-actions,.site-footer,.report-disclaimer{display:none!important}
+ .sidebar,.workspace-topbar,.heading-actions,.site-footer{display:none!important}
  .workspace-page,.workspace-main{display:block!important;width:100%!important;min-height:0!important}
  .workspace-content{max-width:none!important;padding:0!important}
  #view-results{display:block!important}
  #view-results .page-heading h1,#view-results .result-number,#view-results .result-item strong{color:#17131f!important}
  #view-results .page-heading p,#view-results .result-item p,#view-results .result-summary small{color:#514b5b!important}
  #view-results .result-summary>div,#view-results .result-item{background:#fff!important;border:1px solid #ddd!important;break-inside:avoid}
- #view-results .status-pill{color:#333!important;background:#fff!important;border-color:#aaa!important}
+ #view-results .status-pill{color:#333!important;background:#fff!important;border-color:#aaa!important}\n #view-results .report-disclaimer{display:block!important;color:#444!important;background:#fff!important;border-color:#ccc!important}
 }
+
+/* Provenance labels: reports distinguish user observations from browser limits. */
+#view-results .status-pill.manual_observation{color:#c9b3f2;background:rgba(149,101,255,.08);border-color:rgba(171,135,255,.22)}
+#view-results .status-pill.capability_limit{color:var(--warning);background:rgba(242,200,121,.07);border-color:rgba(242,200,121,.2)}
+#view-results .status-pill.verified_check{color:var(--success);background:rgba(116,214,166,.07);border-color:rgba(116,214,166,.2)}
+#view-results .status-pill.legacy_unverified{color:var(--muted);background:rgba(170,161,186,.06);border-color:var(--border)}

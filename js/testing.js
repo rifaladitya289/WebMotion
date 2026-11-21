@@ -1,11 +1,23 @@
 import { state, toast } from "./state.js";
 const toolNames = { responsive:"Responsive",animation:"Animation",interaction:"Interaction",transition:"Transition" };
-function addResult(title,status,detail) { const existing = state.results.findIndex(item => item.title === title); const item = { id: existing >= 0 ? state.results[existing].id : (crypto.randomUUID?.() || String(Date.now())), title, status, detail, date: new Date().toISOString() }; if (existing >= 0) state.results[existing] = item; else state.results.unshift(item); document.dispatchEvent(new CustomEvent("webmotion:result-added",{detail:item})); }
+function openExternalTab(url) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.referrerPolicy = "no-referrer";
+  link.hidden = true;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  toast("Opening the website in a new tab. If it does not appear, check your browser's pop-up settings.", "info");
+}
+function addResult(title,status,detail,kind = "manual_observation") { const existing = state.results.findIndex(item => item.title === title); const item = { id: existing >= 0 ? state.results[existing].id : (crypto.randomUUID?.() || String(Date.now())), title, status, kind, source:"user", detail, date: new Date().toISOString() }; if (existing >= 0) state.results[existing] = item; else state.results.unshift(item); document.dispatchEvent(new CustomEvent("webmotion:result-added",{detail:item})); }
 function saveObservation(type) {
   const field = document.querySelector("#" + type + "Note");
   const note = field?.value.trim();
   if (!note) return toast("Write an observation before saving.", "error");
-  const item = { id: crypto.randomUUID?.() || String(Date.now()), title: toolNames[type] + " manual observation", status:"warning", detail:note, date:new Date().toISOString() };
+  const item = { id: crypto.randomUUID?.() || String(Date.now()), title: toolNames[type] + " manual observation", status:"warning", kind:"manual_observation", source:"user", detail:note, date:new Date().toISOString() };
   state.notes.unshift(item); state.results.unshift(item); field.value = ""; toast("Observation saved to Results.", "success"); document.dispatchEvent(new CustomEvent("webmotion:result-added",{detail:item}));
 }
 export function initTesting() {
@@ -59,8 +71,7 @@ export function initTesting() {
   }));
   document.querySelector("#openInteractionTarget").addEventListener("click", () => {
     if (!state.currentUrl) return toast("Load a website preview first.","error");
-    const opened = window.open(state.currentUrl,"_blank","noopener,noreferrer");
-    toast(opened ? "Website opened in a separate tab for manual interaction testing." : "The browser blocked the new tab. Allow pop-ups or use Open in new tab from Preview.", opened ? "info" : "error");
+    openExternalTab(state.currentUrl);
   });
   document.querySelectorAll(".tool-tab").forEach(button => button.addEventListener("click", () => {
     state.currentTool = button.dataset.tool;
@@ -70,7 +81,7 @@ export function initTesting() {
   document.querySelector("#inspectAnimations").addEventListener("click", () => {
     const output = document.querySelector("#animationOutput");
     output.textContent = "Inspection unavailable for this preview. The iframe is sandboxed and external websites are isolated by browser security rules, so WebMotion cannot read their animation timeline. Use the website directly and save a manual observation.";
-    addResult("Animation inspection", "warning", "Not automatically inspected: browser sandbox and cross-origin restrictions prevent safe DOM/timeline access.");
+    addResult("Animation inspection limitation", "warning", "Not automatically inspected: browser sandbox and cross-origin restrictions prevent safe DOM/timeline access.", "capability_limit");
     toast("Animation inspection limitation recorded.");
   });
   document.querySelectorAll("[data-save-note]").forEach(button => button.addEventListener("click", () => saveObservation(button.dataset.saveNote)));

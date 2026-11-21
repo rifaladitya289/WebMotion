@@ -1,0 +1,31 @@
+/* WebMotion design tokens — the single source of truth for shared UI foundations. */
+:root{
+  color-scheme:dark;
+  --bg:#0d0a16;
+  --surface:#171222;
+  --surface-2:#1d172b;
+  --surface-raised:#241b35;
+  --primary:#9a78f5;
+  --primary-hover:#a98aff;
+  --accent:#c5a5ff;
+  --white:#ffffff;
+  --muted:#aaa1ba;
+  --border:rgba(205,184,255,.13);
+  --success:#75d6ae;
+  --warning:#f2c879;
+  --danger:#f28c9a;
+  --focus:#c4a5ff;
+  --radius:12px;
+  --radius-sm:7px;
+  --radius-md:9px;
+  --radius-lg:12px;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-6:24px;
+  --space-8:32px;
+  --font-heading:"Space Grotesk",sans-serif;
+  --font-body:"Inter",sans-serif;
+  --ease:180ms ease;
+}

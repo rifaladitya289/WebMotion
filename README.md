@@ -1,36 +1,42 @@
 # WebMotion
 
-**Preview. Test. Perfect.**
+**Preview. Compare. Record.**
 
-WebMotion is a static website preview and testing workspace built with HTML, CSS, and vanilla JavaScript. It is designed to run on GitHub Pages and work without a required account.
+WebMotion is a focused website viewport preview and manual QA documentation workspace built with HTML, CSS, and vanilla JavaScript. It is designed for GitHub Pages and does not require an account.
 
-## Current build
+## Current capabilities
 
-- Landing page with Features, How It Works, About, and footer navigation.
-- Guest workspace with URL-based preview flow.
-- Desktop, tablet, mobile, and custom viewport controls.
-- Manual animation, interaction, and transition review panels (automatic timeline/DOM inspection is not active).
-- Results report with honest status labels, saved session restoration, and print-to-PDF support.
-- Local session history, reopen/delete, and JSON data export.
-- Settings, local data export, clipboard-based feedback, privacy/terms summaries, fullscreen, and keyboard shortcuts.
-- Responsive sidebar/drawer behavior for mobile.
+- Landing page and guided workspace flow.
+- URL normalization and contained website preview.
+- Desktop, laptop, tablet, mobile, and custom viewport presets.
+- Desktop/laptop visual pointer simulator.
+- Manual viewport, animation, interaction, and transition review.
+- Provenance-aware report, local session save/restore, history management, and print-to-PDF.
+- Settings, reduced-motion preference, local JSON export, clipboard feedback, and help/legal summaries.
+- Seven-step hands-on Interactive Product Tour, offered on first visit and restartable from Overview or Help & Feedback.
+- Responsive sidebar navigation and Gallagher’s Studio project attribution.
 
-## Important browser limitations
+## Important limitations
 
-WebMotion does not bypass website security policies. A target website may block iframe embedding with Content Security Policy `frame-ancestors` or `X-Frame-Options`. Browser same-origin rules also prevent WebMotion from reading most external page content. In those cases, use **Open in new tab** and the manual review checklists.
+- A target website may block iframe embedding using Content Security Policy `frame-ancestors` or `X-Frame-Options`.
+- Browser same-origin policy and the iframe sandbox prevent reliable access to arbitrary third-party page content or trusted remote clicks, right-clicks, and scrolling.
+- The Virtual Pointer is a visual pointer simulator. For real interaction, use the embedded page directly when it works or open the target in a separate tab.
+- Responsive controls change the preview viewport; they do not certify a website on every physical device.
+- Animation, interaction, and transition reviews are user-recorded observations, not automated passes.
+- Authentication, cloud sync, and server-side reports are not active in this static build.
 
-Responsive viewport controls change the size of the preview frame. They do not certify that the target site is fully responsive. Manual checklist entries are recorded as observations, not automatic passes. Animation DOM inspection is not available in this sandboxed build.
+WebMotion intentionally keeps the iframe sandboxed. Do not add `allow-same-origin` or remove sandbox protections merely to imitate remote control. A true remote-browser experience is a separate backend architecture.
 
 ## Run locally
 
-Open `index.html` using a local static server. ES modules may not work when opening the file directly with a `file://` URL.
+Serve the repository with a local static HTTP server. ES modules may not work when opening `index.html` directly through a `file://` URL.
 
-## Deploy to GitHub Pages
+## Deploy with GitHub Pages
 
 1. Open repository **Settings → Pages**.
-2. Under Build and deployment, choose **Deploy from a branch**.
-3. Select branch `main` and folder `/ (root)`.
-4. Save and wait for the deployment URL to appear.
+2. Choose **Deploy from a branch**.
+3. Select `main` and `/(root)`.
+4. Save and wait for the deployment to finish.
 
 ## Project structure
 
@@ -38,11 +44,24 @@ Open `index.html` using a local static server. ES modules may not work when open
 WebMotion/
 ├── index.html
 ├── README.md
+├── AUDIT.md
+├── PRODUCT-IDENTITY-AUDIT.md
+├── PRODUCT-IDENTITY-GUIDELINES.md
+├── QA-RELEASE.md
 ├── css/
+│   ├── tokens.css
 │   ├── style.css
 │   ├── landing.css
 │   ├── workspace.css
-│   └── responsive.css
+│   ├── responsive.css
+│   ├── polish.css
+│   ├── preview-redesign.css
+│   ├── testing-redesign.css
+│   ├── results-redesign.css
+│   ├── history-redesign.css
+│   ├── settings-help-redesign.css
+│   ├── studio-attribution.css
+│   └── tour.css
 └── js/
     ├── app.js
     ├── state.js
@@ -51,13 +70,14 @@ WebMotion/
     ├── testing.js
     ├── results.js
     ├── history.js
-    └── settings.js
+    ├── settings.js
+    └── tour.js
 ```
 
-## Audit and current limitations
+## Project identity
 
-See [AUDIT.md](AUDIT.md) for the latest source-level audit, fixes applied, structural checks, and items that still require real-device/browser testing. The current build has not been certified through a full cross-browser QA run.
+WebMotion is a product by Gallagher’s Studio. The product endorsement appears in the workspace sidebar and landing-page footer.
 
-## Planned, not yet active
+## QA status
 
-Supabase authentication, cloud sync, account management, advanced test automation, and server-backed reports are not connected in this version. No API keys or credentials are required by this static build.
+See [PRODUCT-IDENTITY-GUIDELINES.md](PRODUCT-IDENTITY-GUIDELINES.md) for the approved product identity rules. See [PRODUCT-IDENTITY-AUDIT.md](PRODUCT-IDENTITY-AUDIT.md) for the product identity and anti-AI-slop review. See [AUDIT.md](AUDIT.md) for source checks, fixes, known limitations, and current release status. Use [QA-RELEASE.md](QA-RELEASE.md) for the manual browser/device test matrix. Source checks are not a substitute for runtime testing.

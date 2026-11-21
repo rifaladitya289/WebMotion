@@ -20,11 +20,11 @@ export function initHistory() {
     const previous = state.history;
     state.history = [session, ...state.history].slice(0,50);
     if (!writeJSON(STORAGE_KEYS.history,state.history)) { state.history = previous; return toast("Storage is full. Export your data or remove older sessions.", "error"); }
-    renderHistory(); toast("Session saved on this device.", "success");
+    renderHistory(); toast("Session saved on this device.", "success"); document.dispatchEvent(new CustomEvent("webmotion:session-saved", { detail: { id: session.id, url: session.url } }));
   });
   document.querySelector("#clearHistory").addEventListener("click", () => {
     const settings = readJSON(STORAGE_KEYS.settings,{confirmClear:true});
-    if (settings.confirmClear && !confirm("Clear all saved WebMotion sessions on this device?")) return;
+    if (settings.confirmClear !== false && !confirm("Clear all saved WebMotion sessions on this device?")) return;
     const previous = state.history; state.history = []; if (!writeJSON(STORAGE_KEYS.history,state.history)) { state.history = previous; return toast("Could not clear history because local storage is unavailable.", "error"); } renderHistory(); toast("History cleared.");
   });
 }

@@ -1,20 +1,9 @@
-/* WebMotion UI refresh — visual hierarchy, spacing and responsive polish */
-:root{
-  --bg:#0d0a16;
-  --surface:#171222;
-  --surface-2:#1d172b;
-  --surface-raised:#241b35;
-  --primary:#9a78f5;
-  --accent:#c5a5ff;
-  --muted:#aaa1ba;
-  --border:rgba(205,184,255,.13);
-  --radius:12px;
-}
+/* Shared foundations live in tokens.css. */
 body{background:radial-gradient(ellipse at 50% -18%,rgba(126,82,205,.16),transparent 42%),var(--bg);line-height:1.65}
 .button,.icon-button,.side-link,.quick-card,.device-button,.tool-tab,.preset-card{transition:all .18s ease}
 .button{border-radius:9px;min-height:40px}
-.button-primary{background:linear-gradient(135deg,#9872f2,#8056df);box-shadow:0 5px 18px rgba(125,83,220,.18)}
-.button-primary:hover{background:linear-gradient(135deg,#a98aff,#8e68ec);box-shadow:0 8px 24px rgba(125,83,220,.25)}
+.button-primary{background:linear-gradient(135deg,var(--primary),#8056df);box-shadow:0 5px 18px rgba(125,83,220,.18)}
+.button-primary:hover{background:linear-gradient(135deg,var(--primary-hover),#8e68ec);box-shadow:0 8px 24px rgba(125,83,220,.25)}
 .button-secondary,.icon-button{border-color:rgba(205,184,255,.17);background:rgba(255,255,255,.018)}
 .wordmark{letter-spacing:-1.35px}
 .section-kicker{color:#c1a5ff;letter-spacing:1.55px}
@@ -109,7 +98,7 @@ body{background:radial-gradient(ellipse at 50% -18%,rgba(126,82,205,.16),transpa
 .empty-state{border-radius:12px;padding:44px 22px}
 .empty-state strong{font-size:15px}
 .empty-state p{font-size:12px}
-:focus-visible{outline-color:#c4a5ff;outline-offset:3px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 @media(max-width:950px){
  .workspace-content{padding:28px 22px 44px}
  .url-start-card{gap:20px}
